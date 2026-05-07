@@ -1,0 +1,160 @@
+********** MODEL NAME
+STAT5
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(x123) = 2*k4*x3tau - 2*k3*x3
+d/dt(x23) = k1*(x123-x23)*input(time) - 2*k3*x3
+d/dt(x3) = -k3*x3 + .5*k2*(x23-2*x3)^2
+d/dt(x4) = -k4*x3tau + k3*x3
+d/dt(x3i) = 3*tauinv*(x3-x3i)
+d/dt(x3ii) = 3*tauinv*(x3i-x3ii)
+d/dt(x3tau) = 3*tauinv*(x3ii-x3tau)
+
+d/dt(Ph11) = 2*k4*Ph71 - 2*k3*Ph31
+d/dt(Ph21) = (input(time)*k1*Ph11) - (input(time)*k1*Ph21) - 2*k3*Ph31
+d/dt(Ph31) = - Ph31*(k3 - (k2*(8*Ph31 - 4*Ph21))/2) - (k2*Ph21*(4*Ph31 - 2*Ph21))/2
+d/dt(Ph41) = k3*Ph31 - k4*Ph71
+d/dt(Ph51) = 3*tauinv*Ph31 - 3*tauinv*Ph51
+d/dt(Ph61) = 3*tauinv*Ph51 - 3*tauinv*Ph61
+d/dt(Ph71) = 3*tauinv*Ph61 - 3*tauinv*Ph71
+
+d/dt(Ph12) = 2*k4*Ph72 - 2*k3*Ph32
+d/dt(Ph22) = (input(time)*k1*Ph12) - (input(time)*k1*Ph22) - 2*k3*Ph32
+d/dt(Ph32) = - Ph32*(k3 - (k2*(Ph32*8 - Ph22*4))/2) - (k2*Ph22*(Ph32*4 - Ph22*2))/2
+d/dt(Ph42) = k3*Ph32 - k4*Ph72
+d/dt(Ph52) = 3*tauinv*Ph32 - 3*tauinv*Ph52
+d/dt(Ph62) = 3*tauinv*Ph52 - 3*tauinv*Ph62
+d/dt(Ph72) = 3*tauinv*Ph62 - 3*tauinv*Ph72
+
+d/dt(Ph13) = 2*k4*Ph73 - 2*k3*Ph33
+d/dt(Ph23) = (input(time)*k1*Ph13) - (input(time)*k1*Ph23) - 2*k3*Ph33
+d/dt(Ph33) = - Ph33*(k3 - (k2*(Ph33*8 - Ph23*4))/2) - (k2*Ph23*(Ph33*4 - Ph23*2))/2
+d/dt(Ph43) = k3*Ph33 - k4*Ph73
+d/dt(Ph53) = 3*tauinv*Ph33 - 3*tauinv*Ph53
+d/dt(Ph63) = 3*tauinv*Ph53 - 3*tauinv*Ph63
+d/dt(Ph73) = 3*tauinv*Ph63 - 3*tauinv*Ph73
+
+d/dt(Ph14) = 2*k4*Ph74 - 2*k3*Ph34
+d/dt(Ph24) = (input(time)*k1*Ph14) - (input(time)*k1*Ph24) - 2*k3*Ph34
+d/dt(Ph34) = - Ph34*(k3 - (k2*(Ph34*8 - Ph24*4))/2) - (k2*Ph24*(Ph34*4 - Ph24*2))/2
+d/dt(Ph44) = k3*Ph34 - k4*Ph74
+d/dt(Ph54) = 3*tauinv*Ph34 - 3*tauinv*Ph54
+d/dt(Ph64) = 3*tauinv*Ph54 - 3*tauinv*Ph64
+d/dt(Ph74) = 3*tauinv*Ph64 - 3*tauinv*Ph74
+
+d/dt(Ph15) = 2*k4*Ph75 - 2*k3*Ph35
+d/dt(Ph25) = (input(time)*k1*Ph15) - (input(time)*k1*Ph25) - 2*k3*Ph35
+d/dt(Ph35) = - Ph35*(k3 - (k2*(Ph35*8 - Ph25*4))/2) - (k2*Ph25*(Ph35*4 - Ph25*2))/2
+d/dt(Ph45) = k3*Ph35 - k4*Ph75
+d/dt(Ph55) = 3*tauinv*Ph35 - 3*tauinv*Ph55
+d/dt(Ph65) = 3*tauinv*Ph55 - 3*tauinv*Ph65
+d/dt(Ph75) = 3*tauinv*Ph65 - 3*tauinv*Ph75
+
+d/dt(Ph16) = 2*k4*Ph76 - 2*k3*Ph36
+d/dt(Ph26) = (input(time)*k1*Ph16) - (input(time)*k1*Ph26) - 2*k3*Ph36
+d/dt(Ph36) = - Ph36*(k3 - (k2*(Ph36*8 - Ph26*4))/2) - (k2*Ph26*(Ph36*4 - Ph26*2))/2
+d/dt(Ph46) = k3*Ph36 - k4*Ph76
+d/dt(Ph56) = 3*tauinv*Ph36 - 3*tauinv*Ph56
+d/dt(Ph66) = 3*tauinv*Ph56 - 3*tauinv*Ph66
+d/dt(Ph76) = 3*tauinv*Ph66 - 3*tauinv*Ph76
+
+d/dt(Ph17) = 2*k4*Ph77 - 2*k3*Ph37
+d/dt(Ph27) = (input(time)*k1*Ph17) - (input(time)*k1*Ph27) - 2*k3*Ph37
+d/dt(Ph37) = - Ph37*(k3 - (k2*(Ph37*8 - Ph27*4))/2) - (k2*Ph27*(Ph37*4 - Ph27*2))/2
+d/dt(Ph47) = k3*Ph37 - k4*Ph77
+d/dt(Ph57) = 3*tauinv*Ph37 - 3*tauinv*Ph57
+d/dt(Ph67) = 3*tauinv*Ph57 - 3*tauinv*Ph67
+d/dt(Ph77) = 3*tauinv*Ph67 - 3*tauinv*Ph77
+
+Ph11(0) = 1
+Ph21(0) = 0
+Ph31(0) = 0
+Ph41(0) = 0
+Ph51(0) = 0
+Ph61(0) = 0
+Ph71(0) = 0
+
+Ph12(0) = 0
+Ph22(0) = 1
+Ph32(0) = 0
+Ph42(0) = 0
+Ph52(0) = 0
+Ph62(0) = 0
+Ph72(0) = 0
+
+Ph13(0) = 0
+Ph23(0) = 0
+Ph33(0) = 1
+Ph43(0) = 0
+Ph53(0) = 0
+Ph63(0) = 0
+Ph73(0) = 0
+
+Ph14(0) = 0
+Ph24(0) = 0
+Ph34(0) = 0
+Ph44(0) = 1
+Ph54(0) = 0
+Ph64(0) = 0
+Ph74(0) = 0
+
+Ph15(0) = 0
+Ph25(0) = 0
+Ph35(0) = 0
+Ph45(0) = 0
+Ph55(0) = 1
+Ph65(0) = 0
+Ph75(0) = 0
+
+Ph16(0) = 0
+Ph26(0) = 0
+Ph36(0) = 0
+Ph46(0) = 0
+Ph56(0) = 0
+Ph66(0) = 1
+Ph76(0) = 0
+
+Ph17(0) = 0
+Ph27(0) = 0
+Ph37(0) = 0
+Ph47(0) = 0
+Ph57(0) = 0
+Ph67(0) = 0
+Ph77(0) = 1
+                                     
+x123(0)  = 1
+x23(0)   = 0
+x3(0)    = 0
+x4(0)    = 0
+x3i(0)   = 0
+x3ii(0)  = 0
+x3tau(0) = 0
+
+********** MODEL PARAMETERS
+k1 = 0.021
+k2 = 2.46
+k3 = 0.1066
+k4 = 0.10658
+tauinv = 0.15625
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+input(time) = interp1IQM([0,2,4,6,8,10,12,14,16,18,20,25,30,40,50,60], 
+                         [1.0,8.5,14.3,44.6,58.3,50.2,45.7,33.3,36.3,19.3,19.7,18.2,3.0,1.5,0.8,1.0],
+                         time)
+
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
+

@@ -1,0 +1,48 @@
+********** MODEL NAME
+STAT5
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(x123) = 2*k4*x3tau - 2*k3*x3
+d/dt(x23) = k1*(x123-x23)*input(time) - 2*k3*x3
+d/dt(x3) = -k3*x3 + .5*k2*(x23-2*x3)^2
+d/dt(x4) = -k4*x3tau + k3*x3
+d/dt(x3i) = 3*tauinv*(x3-x3i)
+d/dt(x3ii) = 3*tauinv*(x3i-x3ii)
+d/dt(x3tau) = 3*tauinv*(x3ii-x3tau)
+                                            
+x123(0)  = 1
+x23(0)   = 0
+x3(0)    = 0
+x4(0)    = 0
+x3i(0)   = 0
+x3ii(0)  = 0
+x3tau(0) = 0
+
+********** MODEL PARAMETERS
+k1 = 0.021
+k2 = 2.46
+k3 = 0.1066
+k4 = 0.10658
+tauinv = 0.15625
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+input(time) = interp1IQM([0,2,4,6,8,10,12,14,16,18,20,25,30,40,50,60], 
+                         [1.0,8.5,14.3,44.6,58.3,50.2,45.7,33.3,36.3,19.3,19.7,18.2,3.0,1.5,0.8,1.0],
+                         time)
+
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
+

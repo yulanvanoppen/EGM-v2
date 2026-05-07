@@ -1,0 +1,35 @@
+********** MODEL NAME
+generalizedLV
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(X1) = X1 * (r - k1 * X1 - k2 * X3)
+d/dt(X2) = X2 * (r - k1 * X2 - k2 * X1)
+d/dt(X3) = X3 * (r - k1 * X3 - k2 * X2)
+
+X1(0) = .6
+X2(0) = .6
+X3(0) = .1
+
+********** MODEL PARAMETERS
+r = 1
+k1 = 1
+k2 = 2
+
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
+

@@ -1,0 +1,41 @@
+********** MODEL NAME
+linear_oscillator
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(A) = -a*B
+d/dt(B) = .1*A - b*B
+
+d/dt(Ph11) = -a*Ph21
+d/dt(Ph21) = .1*Ph11 - b*Ph21
+
+d/dt(Ph12) = -a*Ph22
+d/dt(Ph22) = .1*Ph12 - b*Ph22
+
+A(0) = 1
+B(0) = 1
+
+Ph11(0) = 1
+Ph21(0) = 0
+Ph12(0) = 0
+Ph22(0) = 1
+
+********** MODEL PARAMETERS
+a = .08
+b = .002                               
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS

@@ -1,0 +1,60 @@
+********** MODEL NAME
+generalizedLV
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(X1) = X1 * (r - k1 * X1 - k2 * X3)
+d/dt(X2) = X2 * (r - k1 * X2 - k2 * X1)
+d/dt(X3) = X3 * (r - k1 * X3 - k2 * X2)
+
+d/dt(Ph11) = - Ph11*(2*X1*k1 - r + X3*k2) - Ph31*X1*k2
+d/dt(Ph21) = - Ph21*(X1*k2 - r + 2*X2*k1) - Ph11*X2*k2
+d/dt(Ph31) = - Ph31*(X2*k2 - r + 2*X3*k1) - Ph21*X3*k2
+
+d/dt(Ph12) = - Ph12*(2*X1*k1 - r + X3*k2) - Ph32*X1*k2
+d/dt(Ph22) = - Ph22*(X1*k2 - r + 2*X2*k1) - Ph12*X2*k2
+d/dt(Ph32) = - Ph32*(X2*k2 - r + 2*X3*k1) - Ph22*X3*k2
+
+d/dt(Ph13) = - Ph13*(2*X1*k1 - r + X3*k2) - Ph33*X1*k2
+d/dt(Ph23) = - Ph23*(X1*k2 - r + 2*X2*k1) - Ph13*X2*k2
+d/dt(Ph33) = - Ph33*(X2*k2 - r + 2*X3*k1) - Ph23*X3*k2
+
+X1(0) = .6
+X2(0) = .6
+X3(0) = .1
+
+Ph11(0) = 1
+Ph21(0) = 0
+Ph31(0) = 0
+
+Ph12(0) = 0
+Ph22(0) = 1
+Ph32(0) = 0
+
+Ph13(0) = 0
+Ph23(0) = 0
+Ph33(0) = 1
+
+********** MODEL PARAMETERS
+r = 1
+
+k1 = 1
+k2 = 2
+
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
+

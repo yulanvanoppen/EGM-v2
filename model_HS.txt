@@ -1,0 +1,30 @@
+********** MODEL NAME
+higgins_selkov
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(S) = 1 - c*S*P^2
+d/dt(P) = c*S*P^2 - k*P
+
+S(0) = 1
+P(0) = 1
+
+********** MODEL PARAMETERS
+c = .95
+k = 1                             
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS

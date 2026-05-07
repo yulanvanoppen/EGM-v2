@@ -1,0 +1,129 @@
+********** MODEL NAME
+bifunctional_TCS
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(HpR) = k2*(HpT-HpR)*(RF+RpH-RpT) - (k3+k4)*HpR
+d/dt(RpH) = k5*(RpT-RpH)*(HF+HpR-HpT) - (k6+k7)*RpH
+d/dt(HF)  = (k7+k6)*RpH - k5*(HF+HpR-HpT)*(RpT-RpH) - k2*(HpT-HpR)*(RF+RpH-RpT) + (k3+k4)*HpR
+d/dt(RF)  = (k6+k7)*RpH - k5*(HF+HpR-HpT)*(RpT-RpH) - k2*(HpT-HpR)*(RF+RpH-RpT) + (k3+k4)*HpR
+d/dt(HpT) = k1*(HF+HpR-HpT) - k8*(HpT-HpR) - k4*HpR
+d/dt(RpT) = k4*HpR - k7*RpH
+
+d/dt(Ph11)=Ph61*k2*(Ph11-Ph51)-Ph41*k2*(Ph11-Ph51)-Ph21*k2*(Ph11-Ph51)-Ph11*(k3+k4+k2*(Ph41+Ph21-Ph61))+Ph51*k2*(Ph41+Ph21-Ph61)
+d/dt(Ph21)=Ph51*k5*(Ph21-Ph61)-Ph31*k5*(Ph21-Ph61)-Ph11*k5*(Ph21-Ph61)-Ph21*(k6+k7+k5*(Ph31+Ph11-Ph51))+Ph61*k5*(Ph31+Ph11-Ph51)
+d/dt(Ph31)=Ph21*(k6+k7+k2*(Ph11-Ph51)+k5*(Ph31+Ph11-Ph51))+Ph11*(k3+k4+k5*(Ph21-Ph61)+k2*(Ph41+Ph21-Ph61))-Ph61*(k2*(Ph11-Ph51)+k5*(Ph31+Ph11-Ph51))-Ph51*(k5*(Ph21-Ph61)+k2*(Ph41+Ph21-Ph61))+Ph41*k2*(Ph11-Ph51)+Ph31*k5*(Ph21-Ph61)
+d/dt(Ph41)=Ph21*(k6+k7+k2*(Ph11-Ph51)+k5*(Ph31+Ph11-Ph51))+Ph11*(k3+k4+k5*(Ph21-Ph61)+k2*(Ph41+Ph21-Ph61))-Ph61*(k2*(Ph11-Ph51)+k5*(Ph31+Ph11-Ph51))-Ph51*(k5*(Ph21-Ph61)+k2*(Ph41+Ph21-Ph61))+Ph41*k2*(Ph11-Ph51)+Ph31*k5*(Ph21-Ph61)
+d/dt(Ph51)=Ph31*k1+Ph11*(k1-k4+k8)-Ph51*(k1+k8)
+d/dt(Ph61)=Ph11*k4-Ph21*k7
+
+d/dt(Ph12)=Ph62*k2*(Ph12-Ph52)-Ph42*k2*(Ph12-Ph52)-Ph22*k2*(Ph12-Ph52)-Ph12*(k3+k4+k2*(Ph42+Ph22-Ph62))+Ph52*k2*(Ph42+Ph22-Ph62)
+d/dt(Ph22)=Ph52*k5*(Ph22-Ph62)-Ph32*k5*(Ph22-Ph62)-Ph12*k5*(Ph22-Ph62)-Ph22*(k6+k7+k5*(Ph32+Ph12-Ph52))+Ph62*k5*(Ph32+Ph12-Ph52)
+d/dt(Ph32)=Ph22*(k6+k7+k2*(Ph12-Ph52)+k5*(Ph32+Ph12-Ph52))+Ph12*(k3+k4+k5*(Ph22-Ph62)+k2*(Ph42+Ph22-Ph62))-Ph62*(k2*(Ph12-Ph52)+k5*(Ph32+Ph12-Ph52))-Ph52*(k5*(Ph22-Ph62)+k2*(Ph42+Ph22-Ph62))+Ph42*k2*(Ph12-Ph52)+Ph32*k5*(Ph22-Ph62)
+d/dt(Ph42)=Ph22*(k6+k7+k2*(Ph12-Ph52)+k5*(Ph32+Ph12-Ph52))+Ph12*(k3+k4+k5*(Ph22-Ph62)+k2*(Ph42+Ph22-Ph62))-Ph62*(k2*(Ph12-Ph52)+k5*(Ph32+Ph12-Ph52))-Ph52*(k5*(Ph22-Ph62)+k2*(Ph42+Ph22-Ph62))+Ph42*k2*(Ph12-Ph52)+Ph32*k5*(Ph22-Ph62)
+d/dt(Ph52)=Ph32*k1+Ph12*(k1-k4+k8)-Ph52*(k1+k8)
+d/dt(Ph62)=Ph12*k4-Ph22*k7
+
+d/dt(Ph13)=Ph63*k2*(Ph13-Ph53)-Ph43*k2*(Ph13-Ph53)-Ph23*k2*(Ph13-Ph53)-Ph13*(k3+k4+k2*(Ph43+Ph23-Ph63))+Ph53*k2*(Ph43+Ph23-Ph63)
+d/dt(Ph23)=Ph53*k5*(Ph23-Ph63)-Ph33*k5*(Ph23-Ph63)-Ph13*k5*(Ph23-Ph63)-Ph23*(k6+k7+k5*(Ph33+Ph13-Ph53))+Ph63*k5*(Ph33+Ph13-Ph53)
+d/dt(Ph33)=Ph23*(k6+k7+k2*(Ph13-Ph53)+k5*(Ph33+Ph13-Ph53))+Ph13*(k3+k4+k5*(Ph23-Ph63)+k2*(Ph43+Ph23-Ph63))-Ph63*(k2*(Ph13-Ph53)+k5*(Ph33+Ph13-Ph53))-Ph53*(k5*(Ph23-Ph63)+k2*(Ph43+Ph23-Ph63))+Ph43*k2*(Ph13-Ph53)+Ph33*k5*(Ph23-Ph63)
+d/dt(Ph43)=Ph23*(k6+k7+k2*(Ph13-Ph53)+k5*(Ph33+Ph13-Ph53))+Ph13*(k3+k4+k5*(Ph23-Ph63)+k2*(Ph43+Ph23-Ph63))-Ph63*(k2*(Ph13-Ph53)+k5*(Ph33+Ph13-Ph53))-Ph53*(k5*(Ph23-Ph63)+k2*(Ph43+Ph23-Ph63))+Ph43*k2*(Ph13-Ph53)+Ph33*k5*(Ph23-Ph63)
+d/dt(Ph53)=Ph33*k1+Ph13*(k1-k4+k8)-Ph53*(k1+k8)
+d/dt(Ph63)=Ph13*k4-Ph23*k7
+
+d/dt(Ph14)=Ph64*k2*(Ph14-Ph54)-Ph44*k2*(Ph14-Ph54)-Ph24*k2*(Ph14-Ph54)-Ph14*(k3+k4+k2*(Ph44+Ph24-Ph64))+Ph54*k2*(Ph44+Ph24-Ph64)
+d/dt(Ph24)=Ph54*k5*(Ph24-Ph64)-Ph34*k5*(Ph24-Ph64)-Ph14*k5*(Ph24-Ph64)-Ph24*(k6+k7+k5*(Ph34+Ph14-Ph54))+Ph64*k5*(Ph34+Ph14-Ph54)
+d/dt(Ph34)=Ph24*(k6+k7+k2*(Ph14-Ph54)+k5*(Ph34+Ph14-Ph54))+Ph14*(k3+k4+k5*(Ph24-Ph64)+k2*(Ph44+Ph24-Ph64))-Ph64*(k2*(Ph14-Ph54)+k5*(Ph34+Ph14-Ph54))-Ph54*(k5*(Ph24-Ph64)+k2*(Ph44+Ph24-Ph64))+Ph44*k2*(Ph14-Ph54)+Ph34*k5*(Ph24-Ph64)
+d/dt(Ph44)=Ph24*(k6+k7+k2*(Ph14-Ph54)+k5*(Ph34+Ph14-Ph54))+Ph14*(k3+k4+k5*(Ph24-Ph64)+k2*(Ph44+Ph24-Ph64))-Ph64*(k2*(Ph14-Ph54)+k5*(Ph34+Ph14-Ph54))-Ph54*(k5*(Ph24-Ph64)+k2*(Ph44+Ph24-Ph64))+Ph44*k2*(Ph14-Ph54)+Ph34*k5*(Ph24-Ph64)
+d/dt(Ph54)=Ph34*k1+Ph14*(k1-k4+k8)-Ph54*(k1+k8)
+d/dt(Ph64)=Ph14*k4-Ph24*k7
+
+d/dt(Ph15)=Ph65*k2*(Ph15-Ph55)-Ph45*k2*(Ph15-Ph55)-Ph25*k2*(Ph15-Ph55)-Ph15*(k3+k4+k2*(Ph45+Ph25-Ph65))+Ph55*k2*(Ph45+Ph25-Ph65)
+d/dt(Ph25)=Ph55*k5*(Ph25-Ph65)-Ph35*k5*(Ph25-Ph65)-Ph15*k5*(Ph25-Ph65)-Ph25*(k6+k7+k5*(Ph35+Ph15-Ph55))+Ph65*k5*(Ph35+Ph15-Ph55)
+d/dt(Ph35)=Ph25*(k6+k7+k2*(Ph15-Ph55)+k5*(Ph35+Ph15-Ph55))+Ph15*(k3+k4+k5*(Ph25-Ph65)+k2*(Ph45+Ph25-Ph65))-Ph65*(k2*(Ph15-Ph55)+k5*(Ph35+Ph15-Ph55))-Ph55*(k5*(Ph25-Ph65)+k2*(Ph45+Ph25-Ph65))+Ph45*k2*(Ph15-Ph55)+Ph35*k5*(Ph25-Ph65)
+d/dt(Ph45)=Ph25*(k6+k7+k2*(Ph15-Ph55)+k5*(Ph35+Ph15-Ph55))+Ph15*(k3+k4+k5*(Ph25-Ph65)+k2*(Ph45+Ph25-Ph65))-Ph65*(k2*(Ph15-Ph55)+k5*(Ph35+Ph15-Ph55))-Ph55*(k5*(Ph25-Ph65)+k2*(Ph45+Ph25-Ph65))+Ph45*k2*(Ph15-Ph55)+Ph35*k5*(Ph25-Ph65)
+d/dt(Ph55)=Ph35*k1+Ph15*(k1-k4+k8)-Ph55*(k1+k8)
+d/dt(Ph65)=Ph15*k4-Ph25*k7
+
+d/dt(Ph16)=Ph66*k2*(Ph16-Ph56)-Ph46*k2*(Ph16-Ph56)-Ph26*k2*(Ph16-Ph56)-Ph16*(k3+k4+k2*(Ph46+Ph26-Ph66))+Ph56*k2*(Ph46+Ph26-Ph66)
+d/dt(Ph26)=Ph56*k5*(Ph26-Ph66)-Ph36*k5*(Ph26-Ph66)-Ph16*k5*(Ph26-Ph66)-Ph26*(k6+k7+k5*(Ph36+Ph16-Ph56))+Ph66*k5*(Ph36+Ph16-Ph56)
+d/dt(Ph36)=Ph26*(k6+k7+k2*(Ph16-Ph56)+k5*(Ph36+Ph16-Ph56))+Ph16*(k3+k4+k5*(Ph26-Ph66)+k2*(Ph46+Ph26-Ph66))-Ph66*(k2*(Ph16-Ph56)+k5*(Ph36+Ph16-Ph56))-Ph56*(k5*(Ph26-Ph66)+k2*(Ph46+Ph26-Ph66))+Ph46*k2*(Ph16-Ph56)+Ph36*k5*(Ph26-Ph66)
+d/dt(Ph46)=Ph26*(k6+k7+k2*(Ph16-Ph56)+k5*(Ph36+Ph16-Ph56))+Ph16*(k3+k4+k5*(Ph26-Ph66)+k2*(Ph46+Ph26-Ph66))-Ph66*(k2*(Ph16-Ph56)+k5*(Ph36+Ph16-Ph56))-Ph56*(k5*(Ph26-Ph66)+k2*(Ph46+Ph26-Ph66))+Ph46*k2*(Ph16-Ph56)+Ph36*k5*(Ph26-Ph66)
+d/dt(Ph56)=Ph36*k1+Ph16*(k1-k4+k8)-Ph56*(k1+k8)
+d/dt(Ph66)=Ph16*k4-Ph26*k7
+
+HpR(0) = 0
+RpH(0) = 0
+HF(0)  = .17
+RF(0)  = 6
+HpT(0) = 0
+RpT(0) = 0
+
+Ph11(0) = 1
+Ph21(0) = 0
+Ph31(0) = 0
+Ph41(0) = 0
+Ph51(0) = 0
+Ph61(0) = 1
+
+Ph12(0) = 1
+Ph22(0) = 0
+Ph32(0) = 0
+Ph42(0) = 0
+Ph52(0) = 0
+Ph62(0) = 1
+
+Ph13(0) = 1
+Ph23(0) = 0
+Ph33(0) = 0
+Ph43(0) = 0
+Ph53(0) = 0
+Ph63(0) = 1
+
+Ph14(0) = 1
+Ph24(0) = 0
+Ph34(0) = 0
+Ph44(0) = 0
+Ph54(0) = 0
+Ph64(0) = 1
+
+Ph15(0) = 1
+Ph25(0) = 0
+Ph35(0) = 0
+Ph45(0) = 0
+Ph55(0) = 0
+Ph65(0) = 1
+
+Ph16(0) = 1
+Ph26(0) = 0
+Ph36(0) = 0
+Ph46(0) = 0
+Ph56(0) = 0
+Ph66(0) = 1
+
+********** MODEL PARAMETERS
+k1 = .5
+k2 = .5
+k3 = .5
+k4 = 1.5
+k5 = .1
+k6 = .5
+k7 = .8
+k8 = .2
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
+

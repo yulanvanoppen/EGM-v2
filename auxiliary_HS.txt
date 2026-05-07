@@ -1,0 +1,41 @@
+********** MODEL NAME
+higgins_selkov
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(S) = 1 - c*S*P^2
+d/dt(P) = c*S*P^2 - k*P
+
+d/dt(Ph11) = -c*Ph21^2 * Ph11 - 2*c*Ph11*Ph21 * Ph21
+d/dt(Ph21) = c*Ph21^2 * Ph11 + (2*c*Ph11*Ph21 - k) * Ph21
+
+d/dt(Ph12) = -c*Ph22^2 * Ph12 - 2*c*Ph12*Ph22 * Ph22
+d/dt(Ph22) = c*Ph22^2 * Ph12 + (2*c*Ph12*Ph22 - k) * Ph22
+
+S(0) = 1
+P(0) = 1
+
+Ph11(0) = 1
+Ph21(0) = 0
+Ph12(0) = 0
+Ph22(0) = 1
+
+********** MODEL PARAMETERS
+c = .95
+k = 1                             
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS

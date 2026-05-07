@@ -1,0 +1,30 @@
+********** MODEL NAME
+linear_oscillator
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(A) = -a*B
+d/dt(B) = .1*A - b*B
+
+A(0) = 1
+B(0) = 1
+
+********** MODEL PARAMETERS
+a = .08
+b = .02                               
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS

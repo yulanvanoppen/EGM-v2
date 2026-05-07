@@ -1,0 +1,5 @@
+*.asv
+*.fig
+plot_*.m
+figures/
+simulation/
