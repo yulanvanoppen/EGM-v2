@@ -1,5 +1,7 @@
 *.asv
-
+*.mat
+*.fig
+*.mexw64
 plot_*.m
 figures/
 simulation/
