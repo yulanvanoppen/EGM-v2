@@ -20,10 +20,10 @@ for seed = 1:nseeds
     [data, ground_truth] = generator.generate();                            % generate data
     
                                                                             % setup estimator
-    estimator = EGM(system, data, Knots=10:10:90, InitialConditions=system.x0'+eps);
+    estimator = EGM(system, data, Knots=10:10:90, InitialConditions=[10 20 30 .9 .9 .9 .2 .2 .2]);
     
     out1 = estimator.estimate(.5*system.k0');                               % estimate using EGM
-    out2 = estimator.estimate_TM(.5*system.k0', system.x0'+eps);            % estimate using TM
+    out2 = estimator.estimate_TM(.5*system.k0', [10 20 30 .9 .9 .9 .2 .2 .2]);        % estimate using TM
     
     estimates_EGM(seed, :) = out1.beta;                                     % store parameter estimates and ICs
     estimates_TM(seed, :) = out2.beta;

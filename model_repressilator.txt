@@ -18,12 +18,12 @@ d/dt(mR) = m1+.5*(1-QnDNA/DNAT)-0.3466*mR
 P(0) = 10 
 Q(0) = 20 
 R(0) = 30 
-PnDNA(0) = 0.9 
-QnDNA(0) = 0.9 
-RnDNA(0) = 0.9 
-mP(0) = 0.4
-mQ(0) = 0.4
-mR(0) = 0.4
+PnDNA(0) = 0.95 
+QnDNA(0) = 0.85 
+RnDNA(0) = 0.8 
+mP(0) = 0.5
+mQ(0) = 0.45
+mR(0) = 0.35
 
 
 ********** MODEL PARAMETERS

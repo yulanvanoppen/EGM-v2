@@ -204,8 +204,9 @@ classdef Smoother < handle                                              % Bsplin
             dy = (y3 - y1) ./ (d32 + d21);
             ddy = 2 * (y1./d21./d31 - y2./d32./d21 + y3./d32./d31);
 
-            zscore_dy = mean(dy, 3) ./ std(dy, 0, 3);                       % normalized mean slopes and curvature estimates
-            zscore_ddy = mean(ddy, 3) ./ std(ddy, 0, 3);
+            dim_std = 1 + 2*(obj.N > 1);
+            zscore_dy = mean(dy, 3) ./ std(dy, 0, dim_std);                 % normalized mean slopes and curvature estimates
+            zscore_ddy = mean(ddy, 3) ./ std(ddy, 0, dim_std);
             
             crossings = logical(abs(diff(sign(zscore_dy))) == 2);           % add estimated peaks and troughs
             crossings(end+1, :) = false;
