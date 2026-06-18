@@ -2,7 +2,7 @@
 clearvars
                                                                             % generate ODE system object
 % system = System('model_STAT5.txt', 'auxiliary_STAT5.txt', ...
-%                 FixedParameters=["tauinv"]);
+%                 FixedParameters=["tauinv" "k2"]);
 % save('system_STAT5.mat', 'system')
 load('system_STAT5.mat')
 
@@ -26,8 +26,7 @@ for seed = 1:nseeds
                                                                             % setup estimator
     estimator = EGM(system, data, Knots={[12 18 30 40], [6 10 14 18 25 40]}, ...    % different knots per state
                 InitialConditions=[1 .1 .01 .001 0 0 0]+1E-8, sigma=.001, ...       % crude IC guess
-                LB=.1*system.k0', UB=10*system.k0', ...                             % wider bounds
-                Prior=struct('mean', [1 1E-8 1 1], 'prec', diag([0 4 0 0])));       % prior to prevent unbounded k2
+                LB=.1*system.k0', UB=10*system.k0');                                % wider bounds
     
     out1 = estimator.estimate(.5*system.k0');                               % estimate using EGM
     out2 = estimator.estimate_TM(.5*system.k0', [1 .1 .01 .001 0 0 0]+1E-8);% estimate using TM
