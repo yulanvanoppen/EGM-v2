@@ -96,7 +96,8 @@ classdef GM < handle                                                    % Gradie
             [beta, SS] = Optimization.QPGLS(design, response, nearestSPD(V), ...
                                             obj.settings.lb, obj.settings.ub, obj.settings.prior);
 
-            precision = obj.uncertainties(V);
+            precision = eye(obj.system.P);
+            % precision = obj.uncertainties(V);
         end
         
         

@@ -1,0 +1,55 @@
+********** MODEL NAME
+ERK_MAPK
+
+********** MODEL NOTES
+
+********** MODEL STATES
+d/dt(M)   = k2*C1 + k15*C6 - k1*M*E - k16*M*F
+d/dt(Mp)  = k3*C1 + k5*C2 + k10*C4 + k13*C5 - k11*Mp*F - k12*Mp*F - k4*Mp*E
+d/dt(Mpp) = k6*C2 + k8*C3 - k7*Mpp*F
+d/dt(E)   = (k2+k3)*C1 + (k5+k6)*C2 - k1*M*E - k4*Mp*E
+d/dt(F)   = k8*C3 + k10*C4 + k13*C5 + k15*C6 - k11*Mp*F - k12*Mp*F - k7*Mpp*F - k16*M*F
+d/dt(C1)  = k1*M*E - (k2+k3)*C1
+d/dt(C2)  = k4*Mp*E - (k5+k6)*C2
+d/dt(C3)  = k7*Mpp*F - (k8+k9)*C3
+d/dt(C4)  = k9*C3 - k10*C4 + k11*Mp*F
+d/dt(C5)  = k12*Mp*F - (k13+k14)*C5
+d/dt(C6)  = k14*C5 - k15*C6 + k16*M*F
+
+M(0)   = 1
+Mp(0)  = 0
+Mpp(0) = 0
+E(0)   = 0.1
+F(0)   = 0.1
+C1(0)  = 0
+C2(0)  = 0
+C3(0)  = 0
+C4(0)  = 0
+C5(0)  = 0
+C6(0)  = 0
+
+********** MODEL PARAMETERS
+k1  = 1
+k2  = 1
+k3  = 1
+k4  = 1
+k5  = 1
+k6  = 1
+k7  = 1
+k8  = 1
+k9  = 1
+k10 = 1
+k11 = 1
+k12 = 1
+k13 = 1
+k14 = 1
+k15 = 1
+k16 = 1
+
+********** MODEL VARIABLES
+
+********** MODEL REACTIONS
+
+********** MODEL FUNCTIONS
+
+********** MODEL EVENTS

@@ -135,11 +135,6 @@ classdef TM < handle                                                    % Trajec
         
         function update_parameters(obj, estimate_x0)                    % Update (cell-specific) parameter estimates
             if estimate_x0
-                % % selection = [0 1 0 0 0 0];
-                % selection = ones(1, 6);
-                % selected = @(x0) selection .* x0 + (1-selection) .* obj.system.x0 + 1e-8;
-                % SS = @(beta_x0) obj.squares_sum(beta_x0(1:obj.system.P), obj.data.traces, obj.variances_fs, selected(beta_x0(obj.system.P+1:end)));
-
                 if string(obj.system.name) == "Epo"
                     P = obj.system.P;
                     SS = @(beta_x0) obj.squares_sum(beta_x0(1:P), obj.data.traces, obj.variances_fs, ...

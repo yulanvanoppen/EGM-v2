@@ -1,0 +1,327 @@
+********** MODEL NAME
+ERK_MAPK
+
+
+********** MODEL NOTES
+
+
+********** MODEL STATES
+d/dt(M) = k2*C1 + k15*C6 - k1*M*E - k16*M*F
+d/dt(Mp) = k3*C1 + k5*C2 + k10*C4 + k13*C5 - k11*Mp*F - k12*Mp*F - k4*Mp*E
+d/dt(Mpp) = k6*C2 + k8*C3 - k7*Mpp*F
+d/dt(E) = (k2+k3)*C1 + (k5+k6)*C2 - k1*M*E - k4*Mp*E
+d/dt(F) = k8*C3 + k10*C4 + k13*C5 + k15*C6 - k11*Mp*F - k12*Mp*F - k7*Mpp*F - k16*M*F
+d/dt(C1) = k1*M*E - (k2+k3)*C1
+d/dt(C2) = k4*Mp*E - (k5+k6)*C2
+d/dt(C3) = k7*Mpp*F - (k8+k9)*C3
+d/dt(C4) = k9*C3 - k10*C4 + k11*Mp*F
+d/dt(C5) = k12*Mp*F - (k13+k14)*C5
+d/dt(C6) = k14*C5 - k15*C6 + k16*M*F
+
+d/dt(Ph0101) = Ph0601*k2 + Ph1101*k15 - Ph0101*(E*k1 + F*k16) - M*Ph0401*k1 - M*Ph0501*k16
+d/dt(Ph0201) = Ph0601*k3 + Ph0701*k5 + Ph0901*k10 + Ph1001*k13 - Ph0501*(Mp*k11 + Mp*k12) - Ph0201*(E*k4 + F*k11 + F*k12) - Mp*Ph0401*k4
+d/dt(Ph0301) = Ph0701*k6 + Ph0801*k8 - F*Ph0301*k7 - Mpp*Ph0501*k7
+d/dt(Ph0401) = Ph0601*(k2 + k3) - Ph0401*(M*k1 + Mp*k4) + Ph0701*(k5 + k6) - E*Ph0101*k1 - E*Ph0201*k4
+d/dt(Ph0501) = Ph0801*k8 + Ph0901*k10 + Ph1001*k13 + Ph1101*k15 - Ph0201*(F*k11 + F*k12) - Ph0501*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0101*k16 - F*Ph0301*k7
+d/dt(Ph0601) = E*Ph0101*k1 - Ph0601*(k2 + k3) + M*Ph0401*k1
+d/dt(Ph0701) = E*Ph0201*k4 - Ph0701*(k5 + k6) + Mp*Ph0401*k4
+d/dt(Ph0801) = F*Ph0301*k7 - Ph0801*(k8 + k9) + Mpp*Ph0501*k7
+d/dt(Ph0901) = Ph0801*k9 - Ph0901*k10 + F*Ph0201*k11 + Mp*Ph0501*k11
+d/dt(Ph1001) = F*Ph0201*k12 - Ph1001*(k13 + k14) + Mp*Ph0501*k12
+d/dt(Ph1101) = Ph1001*k14 - Ph1101*k15 + F*Ph0101*k16 + M*Ph0501*k16
+
+d/dt(Ph0102) = Ph0602*k2 + Ph1102*k15 - Ph0102*(E*k1 + F*k16) - M*Ph0402*k1 - M*Ph0502*k16
+d/dt(Ph0202) = Ph0602*k3 + Ph0702*k5 + Ph0902*k10 + Ph1002*k13 - Ph0502*(Mp*k11 + Mp*k12) - Ph0202*(E*k4 + F*k11 + F*k12) - Mp*Ph0402*k4
+d/dt(Ph0302) = Ph0702*k6 + Ph0802*k8 - F*Ph0302*k7 - Mpp*Ph0502*k7
+d/dt(Ph0402) = Ph0602*(k2 + k3) - Ph0402*(M*k1 + Mp*k4) + Ph0702*(k5 + k6) - E*Ph0102*k1 - E*Ph0202*k4
+d/dt(Ph0502) = Ph0802*k8 + Ph0902*k10 + Ph1002*k13 + Ph1102*k15 - Ph0202*(F*k11 + F*k12) - Ph0502*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0102*k16 - F*Ph0302*k7
+d/dt(Ph0602) = E*Ph0102*k1 - Ph0602*(k2 + k3) + M*Ph0402*k1
+d/dt(Ph0702) = E*Ph0202*k4 - Ph0702*(k5 + k6) + Mp*Ph0402*k4
+d/dt(Ph0802) = F*Ph0302*k7 - Ph0802*(k8 + k9) + Mpp*Ph0502*k7
+d/dt(Ph0902) = Ph0802*k9 - Ph0902*k10 + F*Ph0202*k11 + Mp*Ph0502*k11
+d/dt(Ph1002) = F*Ph0202*k12 - Ph1002*(k13 + k14) + Mp*Ph0502*k12
+d/dt(Ph1102) = Ph1002*k14 - Ph1102*k15 + F*Ph0102*k16 + M*Ph0502*k16
+
+d/dt(Ph0103) = Ph0603*k2 + Ph1103*k15 - Ph0103*(E*k1 + F*k16) - M*Ph0403*k1 - M*Ph0503*k16
+d/dt(Ph0203) = Ph0603*k3 + Ph0703*k5 + Ph0903*k10 + Ph1003*k13 - Ph0503*(Mp*k11 + Mp*k12) - Ph0203*(E*k4 + F*k11 + F*k12) - Mp*Ph0403*k4
+d/dt(Ph0303) = Ph0703*k6 + Ph0803*k8 - F*Ph0303*k7 - Mpp*Ph0503*k7
+d/dt(Ph0403) = Ph0603*(k2 + k3) - Ph0403*(M*k1 + Mp*k4) + Ph0703*(k5 + k6) - E*Ph0103*k1 - E*Ph0203*k4
+d/dt(Ph0503) = Ph0803*k8 + Ph0903*k10 + Ph1003*k13 + Ph1103*k15 - Ph0203*(F*k11 + F*k12) - Ph0503*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0103*k16 - F*Ph0303*k7
+d/dt(Ph0603) = E*Ph0103*k1 - Ph0603*(k2 + k3) + M*Ph0403*k1
+d/dt(Ph0703) = E*Ph0203*k4 - Ph0703*(k5 + k6) + Mp*Ph0403*k4
+d/dt(Ph0803) = F*Ph0303*k7 - Ph0803*(k8 + k9) + Mpp*Ph0503*k7
+d/dt(Ph0903) = Ph0803*k9 - Ph0903*k10 + F*Ph0203*k11 + Mp*Ph0503*k11
+d/dt(Ph1003) = F*Ph0203*k12 - Ph1003*(k13 + k14) + Mp*Ph0503*k12
+d/dt(Ph1103) = Ph1003*k14 - Ph1103*k15 + F*Ph0103*k16 + M*Ph0503*k16
+
+d/dt(Ph0104) = Ph0604*k2 + Ph1104*k15 - Ph0104*(E*k1 + F*k16) - M*Ph0404*k1 - M*Ph0504*k16
+d/dt(Ph0204) = Ph0604*k3 + Ph0704*k5 + Ph0904*k10 + Ph1004*k13 - Ph0504*(Mp*k11 + Mp*k12) - Ph0204*(E*k4 + F*k11 + F*k12) - Mp*Ph0404*k4
+d/dt(Ph0304) = Ph0704*k6 + Ph0804*k8 - F*Ph0304*k7 - Mpp*Ph0504*k7
+d/dt(Ph0404) = Ph0604*(k2 + k3) - Ph0404*(M*k1 + Mp*k4) + Ph0704*(k5 + k6) - E*Ph0104*k1 - E*Ph0204*k4
+d/dt(Ph0504) = Ph0804*k8 + Ph0904*k10 + Ph1004*k13 + Ph1104*k15 - Ph0204*(F*k11 + F*k12) - Ph0504*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0104*k16 - F*Ph0304*k7
+d/dt(Ph0604) = E*Ph0104*k1 - Ph0604*(k2 + k3) + M*Ph0404*k1
+d/dt(Ph0704) = E*Ph0204*k4 - Ph0704*(k5 + k6) + Mp*Ph0404*k4
+d/dt(Ph0804) = F*Ph0304*k7 - Ph0804*(k8 + k9) + Mpp*Ph0504*k7
+d/dt(Ph0904) = Ph0804*k9 - Ph0904*k10 + F*Ph0204*k11 + Mp*Ph0504*k11
+d/dt(Ph1004) = F*Ph0204*k12 - Ph1004*(k13 + k14) + Mp*Ph0504*k12
+d/dt(Ph1104) = Ph1004*k14 - Ph1104*k15 + F*Ph0104*k16 + M*Ph0504*k16
+
+d/dt(Ph0105) = Ph0605*k2 + Ph1105*k15 - Ph0105*(E*k1 + F*k16) - M*Ph0405*k1 - M*Ph0505*k16
+d/dt(Ph0205) = Ph0605*k3 + Ph0705*k5 + Ph0905*k10 + Ph1005*k13 - Ph0505*(Mp*k11 + Mp*k12) - Ph0205*(E*k4 + F*k11 + F*k12) - Mp*Ph0405*k4
+d/dt(Ph0305) = Ph0705*k6 + Ph0805*k8 - F*Ph0305*k7 - Mpp*Ph0505*k7
+d/dt(Ph0405) = Ph0605*(k2 + k3) - Ph0405*(M*k1 + Mp*k4) + Ph0705*(k5 + k6) - E*Ph0105*k1 - E*Ph0205*k4
+d/dt(Ph0505) = Ph0805*k8 + Ph0905*k10 + Ph1005*k13 + Ph1105*k15 - Ph0205*(F*k11 + F*k12) - Ph0505*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0105*k16 - F*Ph0305*k7
+d/dt(Ph0605) = E*Ph0105*k1 - Ph0605*(k2 + k3) + M*Ph0405*k1
+d/dt(Ph0705) = E*Ph0205*k4 - Ph0705*(k5 + k6) + Mp*Ph0405*k4
+d/dt(Ph0805) = F*Ph0305*k7 - Ph0805*(k8 + k9) + Mpp*Ph0505*k7
+d/dt(Ph0905) = Ph0805*k9 - Ph0905*k10 + F*Ph0205*k11 + Mp*Ph0505*k11
+d/dt(Ph1005) = F*Ph0205*k12 - Ph1005*(k13 + k14) + Mp*Ph0505*k12
+d/dt(Ph1105) = Ph1005*k14 - Ph1105*k15 + F*Ph0105*k16 + M*Ph0505*k16
+
+d/dt(Ph0106) = Ph0606*k2 + Ph1106*k15 - Ph0106*(E*k1 + F*k16) - M*Ph0406*k1 - M*Ph0506*k16
+d/dt(Ph0206) = Ph0606*k3 + Ph0706*k5 + Ph0906*k10 + Ph1006*k13 - Ph0506*(Mp*k11 + Mp*k12) - Ph0206*(E*k4 + F*k11 + F*k12) - Mp*Ph0406*k4
+d/dt(Ph0306) = Ph0706*k6 + Ph0806*k8 - F*Ph0306*k7 - Mpp*Ph0506*k7
+d/dt(Ph0406) = Ph0606*(k2 + k3) - Ph0406*(M*k1 + Mp*k4) + Ph0706*(k5 + k6) - E*Ph0106*k1 - E*Ph0206*k4
+d/dt(Ph0506) = Ph0806*k8 + Ph0906*k10 + Ph1006*k13 + Ph1106*k15 - Ph0206*(F*k11 + F*k12) - Ph0506*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0106*k16 - F*Ph0306*k7
+d/dt(Ph0606) = E*Ph0106*k1 - Ph0606*(k2 + k3) + M*Ph0406*k1
+d/dt(Ph0706) = E*Ph0206*k4 - Ph0706*(k5 + k6) + Mp*Ph0406*k4
+d/dt(Ph0806) = F*Ph0306*k7 - Ph0806*(k8 + k9) + Mpp*Ph0506*k7
+d/dt(Ph0906) = Ph0806*k9 - Ph0906*k10 + F*Ph0206*k11 + Mp*Ph0506*k11
+d/dt(Ph1006) = F*Ph0206*k12 - Ph1006*(k13 + k14) + Mp*Ph0506*k12
+d/dt(Ph1106) = Ph1006*k14 - Ph1106*k15 + F*Ph0106*k16 + M*Ph0506*k16
+
+d/dt(Ph0107) = Ph0607*k2 + Ph1107*k15 - Ph0107*(E*k1 + F*k16) - M*Ph0407*k1 - M*Ph0507*k16
+d/dt(Ph0207) = Ph0607*k3 + Ph0707*k5 + Ph0907*k10 + Ph1007*k13 - Ph0507*(Mp*k11 + Mp*k12) - Ph0207*(E*k4 + F*k11 + F*k12) - Mp*Ph0407*k4
+d/dt(Ph0307) = Ph0707*k6 + Ph0807*k8 - F*Ph0307*k7 - Mpp*Ph0507*k7
+d/dt(Ph0407) = Ph0607*(k2 + k3) - Ph0407*(M*k1 + Mp*k4) + Ph0707*(k5 + k6) - E*Ph0107*k1 - E*Ph0207*k4
+d/dt(Ph0507) = Ph0807*k8 + Ph0907*k10 + Ph1007*k13 + Ph1107*k15 - Ph0207*(F*k11 + F*k12) - Ph0507*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0107*k16 - F*Ph0307*k7
+d/dt(Ph0607) = E*Ph0107*k1 - Ph0607*(k2 + k3) + M*Ph0407*k1
+d/dt(Ph0707) = E*Ph0207*k4 - Ph0707*(k5 + k6) + Mp*Ph0407*k4
+d/dt(Ph0807) = F*Ph0307*k7 - Ph0807*(k8 + k9) + Mpp*Ph0507*k7
+d/dt(Ph0907) = Ph0807*k9 - Ph0907*k10 + F*Ph0207*k11 + Mp*Ph0507*k11
+d/dt(Ph1007) = F*Ph0207*k12 - Ph1007*(k13 + k14) + Mp*Ph0507*k12
+d/dt(Ph1107) = Ph1007*k14 - Ph1107*k15 + F*Ph0107*k16 + M*Ph0507*k16
+
+d/dt(Ph0108) = Ph0608*k2 + Ph1108*k15 - Ph0108*(E*k1 + F*k16) - M*Ph0408*k1 - M*Ph0508*k16
+d/dt(Ph0208) = Ph0608*k3 + Ph0708*k5 + Ph0908*k10 + Ph1008*k13 - Ph0508*(Mp*k11 + Mp*k12) - Ph0208*(E*k4 + F*k11 + F*k12) - Mp*Ph0408*k4
+d/dt(Ph0308) = Ph0708*k6 + Ph0808*k8 - F*Ph0308*k7 - Mpp*Ph0508*k7
+d/dt(Ph0408) = Ph0608*(k2 + k3) - Ph0408*(M*k1 + Mp*k4) + Ph0708*(k5 + k6) - E*Ph0108*k1 - E*Ph0208*k4
+d/dt(Ph0508) = Ph0808*k8 + Ph0908*k10 + Ph1008*k13 + Ph1108*k15 - Ph0208*(F*k11 + F*k12) - Ph0508*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0108*k16 - F*Ph0308*k7
+d/dt(Ph0608) = E*Ph0108*k1 - Ph0608*(k2 + k3) + M*Ph0408*k1
+d/dt(Ph0708) = E*Ph0208*k4 - Ph0708*(k5 + k6) + Mp*Ph0408*k4
+d/dt(Ph0808) = F*Ph0308*k7 - Ph0808*(k8 + k9) + Mpp*Ph0508*k7
+d/dt(Ph0908) = Ph0808*k9 - Ph0908*k10 + F*Ph0208*k11 + Mp*Ph0508*k11
+d/dt(Ph1008) = F*Ph0208*k12 - Ph1008*(k13 + k14) + Mp*Ph0508*k12
+d/dt(Ph1108) = Ph1008*k14 - Ph1108*k15 + F*Ph0108*k16 + M*Ph0508*k16
+
+d/dt(Ph0109) = Ph0609*k2 + Ph1109*k15 - Ph0109*(E*k1 + F*k16) - M*Ph0409*k1 - M*Ph0509*k16
+d/dt(Ph0209) = Ph0609*k3 + Ph0709*k5 + Ph0909*k10 + Ph1009*k13 - Ph0509*(Mp*k11 + Mp*k12) - Ph0209*(E*k4 + F*k11 + F*k12) - Mp*Ph0409*k4
+d/dt(Ph0309) = Ph0709*k6 + Ph0809*k8 - F*Ph0309*k7 - Mpp*Ph0509*k7
+d/dt(Ph0409) = Ph0609*(k2 + k3) - Ph0409*(M*k1 + Mp*k4) + Ph0709*(k5 + k6) - E*Ph0109*k1 - E*Ph0209*k4
+d/dt(Ph0509) = Ph0809*k8 + Ph0909*k10 + Ph1009*k13 + Ph1109*k15 - Ph0209*(F*k11 + F*k12) - Ph0509*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0109*k16 - F*Ph0309*k7
+d/dt(Ph0609) = E*Ph0109*k1 - Ph0609*(k2 + k3) + M*Ph0409*k1
+d/dt(Ph0709) = E*Ph0209*k4 - Ph0709*(k5 + k6) + Mp*Ph0409*k4
+d/dt(Ph0809) = F*Ph0309*k7 - Ph0809*(k8 + k9) + Mpp*Ph0509*k7
+d/dt(Ph0909) = Ph0809*k9 - Ph0909*k10 + F*Ph0209*k11 + Mp*Ph0509*k11
+d/dt(Ph1009) = F*Ph0209*k12 - Ph1009*(k13 + k14) + Mp*Ph0509*k12
+d/dt(Ph1109) = Ph1009*k14 - Ph1109*k15 + F*Ph0109*k16 + M*Ph0509*k16
+
+d/dt(Ph0110) = Ph0610*k2 + Ph1110*k15 - Ph0110*(E*k1 + F*k16) - M*Ph0410*k1 - M*Ph0510*k16
+d/dt(Ph0210) = Ph0610*k3 + Ph0710*k5 + Ph0910*k10 + Ph1010*k13 - Ph0510*(Mp*k11 + Mp*k12) - Ph0210*(E*k4 + F*k11 + F*k12) - Mp*Ph0410*k4
+d/dt(Ph0310) = Ph0710*k6 + Ph0810*k8 - F*Ph0310*k7 - Mpp*Ph0510*k7
+d/dt(Ph0410) = Ph0610*(k2 + k3) - Ph0410*(M*k1 + Mp*k4) + Ph0710*(k5 + k6) - E*Ph0110*k1 - E*Ph0210*k4
+d/dt(Ph0510) = Ph0810*k8 + Ph0910*k10 + Ph1010*k13 + Ph1110*k15 - Ph0210*(F*k11 + F*k12) - Ph0510*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0110*k16 - F*Ph0310*k7
+d/dt(Ph0610) = E*Ph0110*k1 - Ph0610*(k2 + k3) + M*Ph0410*k1
+d/dt(Ph0710) = E*Ph0210*k4 - Ph0710*(k5 + k6) + Mp*Ph0410*k4
+d/dt(Ph0810) = F*Ph0310*k7 - Ph0810*(k8 + k9) + Mpp*Ph0510*k7
+d/dt(Ph0910) = Ph0810*k9 - Ph0910*k10 + F*Ph0210*k11 + Mp*Ph0510*k11
+d/dt(Ph1010) = F*Ph0210*k12 - Ph1010*(k13 + k14) + Mp*Ph0510*k12
+d/dt(Ph1110) = Ph1010*k14 - Ph1110*k15 + F*Ph0110*k16 + M*Ph0510*k16
+
+d/dt(Ph0111) = Ph0611*k2 + Ph1111*k15 - Ph0111*(E*k1 + F*k16) - M*Ph0411*k1 - M*Ph0511*k16
+d/dt(Ph0211) = Ph0611*k3 + Ph0711*k5 + Ph0911*k10 + Ph1011*k13 - Ph0511*(Mp*k11 + Mp*k12) - Ph0211*(E*k4 + F*k11 + F*k12) - Mp*Ph0411*k4
+d/dt(Ph0311) = Ph0711*k6 + Ph0811*k8 - F*Ph0311*k7 - Mpp*Ph0511*k7
+d/dt(Ph0411) = Ph0611*(k2 + k3) - Ph0411*(M*k1 + Mp*k4) + Ph0711*(k5 + k6) - E*Ph0111*k1 - E*Ph0211*k4
+d/dt(Ph0511) = Ph0811*k8 + Ph0911*k10 + Ph1011*k13 + Ph1111*k15 - Ph0211*(F*k11 + F*k12) - Ph0511*(M*k16 + Mp*k11 + Mp*k12 + Mpp*k7) - F*Ph0111*k16 - F*Ph0311*k7
+d/dt(Ph0611) = E*Ph0111*k1 - Ph0611*(k2 + k3) + M*Ph0411*k1
+d/dt(Ph0711) = E*Ph0211*k4 - Ph0711*(k5 + k6) + Mp*Ph0411*k4
+d/dt(Ph0811) = F*Ph0311*k7 - Ph0811*(k8 + k9) + Mpp*Ph0511*k7
+d/dt(Ph0911) = Ph0811*k9 - Ph0911*k10 + F*Ph0211*k11 + Mp*Ph0511*k11
+d/dt(Ph1011) = F*Ph0211*k12 - Ph1011*(k13 + k14) + Mp*Ph0511*k12
+d/dt(Ph1111) = Ph1011*k14 - Ph1111*k15 + F*Ph0111*k16 + M*Ph0511*k16
+
+M(0) = 1
+Mp(0) = 0
+Mpp(0) = 0
+E(0) = 0.1
+F(0) = 0.1
+C1(0) = 0
+C2(0) = 0
+C3(0) = 0
+C4(0) = 0
+C5(0) = 0
+C6(0) = 0
+
+Ph0101(0) = 1
+Ph0201(0) = 0
+Ph0301(0) = 0
+Ph0401(0) = 0
+Ph0501(0) = 0
+Ph0601(0) = 0
+Ph0701(0) = 0
+Ph0801(0) = 0
+Ph0901(0) = 0
+Ph1001(0) = 0
+Ph1101(0) = 0
+
+Ph0102(0) = 0
+Ph0202(0) = 1
+Ph0302(0) = 0
+Ph0402(0) = 0
+Ph0502(0) = 0
+Ph0602(0) = 0
+Ph0702(0) = 0
+Ph0802(0) = 0
+Ph0902(0) = 0
+Ph1002(0) = 0
+Ph1102(0) = 0
+
+Ph0103(0) = 0
+Ph0203(0) = 0
+Ph0303(0) = 1
+Ph0403(0) = 0
+Ph0503(0) = 0
+Ph0603(0) = 0
+Ph0703(0) = 0
+Ph0803(0) = 0
+Ph0903(0) = 0
+Ph1003(0) = 0
+Ph1103(0) = 0
+
+Ph0104(0) = 0
+Ph0204(0) = 0
+Ph0304(0) = 0
+Ph0404(0) = 1
+Ph0504(0) = 0
+Ph0604(0) = 0
+Ph0704(0) = 0
+Ph0804(0) = 0
+Ph0904(0) = 0
+Ph1004(0) = 0
+Ph1104(0) = 0
+
+Ph0105(0) = 0
+Ph0205(0) = 0
+Ph0305(0) = 0
+Ph0405(0) = 0
+Ph0505(0) = 1
+Ph0605(0) = 0
+Ph0705(0) = 0
+Ph0805(0) = 0
+Ph0905(0) = 0
+Ph1005(0) = 0
+Ph1105(0) = 0
+
+Ph0106(0) = 0
+Ph0206(0) = 0
+Ph0306(0) = 0
+Ph0406(0) = 0
+Ph0506(0) = 0
+Ph0606(0) = 1
+Ph0706(0) = 0
+Ph0806(0) = 0
+Ph0906(0) = 0
+Ph1006(0) = 0
+Ph1106(0) = 0
+
+Ph0107(0) = 0
+Ph0207(0) = 0
+Ph0307(0) = 0
+Ph0407(0) = 0
+Ph0507(0) = 0
+Ph0607(0) = 0
+Ph0707(0) = 1
+Ph0807(0) = 0
+Ph0907(0) = 0
+Ph1007(0) = 0
+Ph1107(0) = 0
+
+Ph0108(0) = 0
+Ph0208(0) = 0
+Ph0308(0) = 0
+Ph0408(0) = 0
+Ph0508(0) = 0
+Ph0608(0) = 0
+Ph0708(0) = 0
+Ph0808(0) = 1
+Ph0908(0) = 0
+Ph1008(0) = 0
+Ph1108(0) = 0
+
+Ph0109(0) = 0
+Ph0209(0) = 0
+Ph0309(0) = 0
+Ph0409(0) = 0
+Ph0509(0) = 0
+Ph0609(0) = 0
+Ph0709(0) = 0
+Ph0809(0) = 0
+Ph0909(0) = 1
+Ph1009(0) = 0
+Ph1109(0) = 0
+
+Ph0110(0) = 0
+Ph0210(0) = 0
+Ph0310(0) = 0
+Ph0410(0) = 0
+Ph0510(0) = 0
+Ph0610(0) = 0
+Ph0710(0) = 0
+Ph0810(0) = 0
+Ph0910(0) = 0
+Ph1010(0) = 1
+Ph1110(0) = 0
+
+Ph0111(0) = 0
+Ph0211(0) = 0
+Ph0311(0) = 0
+Ph0411(0) = 0
+Ph0511(0) = 0
+Ph0611(0) = 0
+Ph0711(0) = 0
+Ph0811(0) = 0
+Ph0911(0) = 0
+Ph1011(0) = 0
+Ph1111(0) = 1
+
+********** MODEL PARAMETERS
+k1  = 1
+k2  = 1
+k3  = 1
+k4  = 1
+k5  = 1
+k6  = 1
+k7  = 1
+k8  = 1
+k9  = 1
+k10 = 1
+k11 = 1
+k12 = 1
+k13 = 1
+k14 = 1
+k15 = 1
+k16 = 1
+
+
+********** MODEL VARIABLES
+
+
+********** MODEL REACTIONS
+
+
+********** MODEL FUNCTIONS
+
+
+********** MODEL EVENTS
+
+

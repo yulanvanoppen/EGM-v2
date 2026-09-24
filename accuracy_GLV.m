@@ -2,12 +2,14 @@
 clearvars
                                                                             % generate ODE system object
 % system = System('model_GLV.txt', 'auxiliary_GLV.txt', FixedParameters = ["r"]);
-% save('system_GLV.mat', 'system')
+system = System('model_GLV.txt', 'auxiliary_GLV_legacyConvention.txt', FixedParameters = ["r"]);
+save('system_GLV.mat', 'system')
 load('system_GLV.mat')
 
 dt_values = [.25 .5 1];                                                     % experimental parameters
 noise_levels = [.005 .02 .05 .1];
-init_error = 5.^(-1:.5:1) - 1;                                              % IC (mean) initialization errors
+init_error = 4*[0 .125 .25 .375 .5];                                        % IC (mean) initialization errors
+
 seeds = 1:50;
 
 beta0 = .5*system.k0';                                                      % initial parameter estimate
@@ -36,8 +38,13 @@ for seed = 1:length(seeds)
     generator = Generator(system, N=1, t=0:dt:10, error_std=noise, D_mult=eps, observed=system.K);
     [data, ground_truth] = generator.generate();
 
+    error = exp(normrnd(0, error, 1, system.K))
+
     dt_gm = .5 + .5*(dt_idx==3);                                            % setup estimator (subsample at dt=.25)
-    estimator = EGM(system, data, Knots=2:2:8, InitialConditions=(1+error)*system.x0', TimePoints=0:dt_gm:10);
+    % estimator = EGM(system, data, Knots=2:2:8, InitialConditions=(1+error)*system.x0', TimePoints=0:dt_gm:10);
+    estimator = EGM(system, data, InitialConditions=error.*system.x0', TimePoints=0:dt_gm:10);
+
+    
 
     try 
         out = estimator.estimate(beta0);                                    % estimate using EGM
@@ -46,6 +53,16 @@ for seed = 1:length(seeds)
         times_EGM(:, seed, init_idx, noise_idx, dt_idx) = out.time;
         accuracies_EGM(seed, init_idx, noise_idx, dt_idx) = eucl_rel(system.k0, out.beta(:));
 
+        % if accuracies_EGM(seed, init_idx, noise_idx, dt_idx) > 100 && norm(error - 1) < 2
+        %     figure
+        %     plot(out.t, out.traces)
+        %     hold on
+        %     plot(out.t_fine, out.smoothed_fine)
+        %     plot(ground_truth.t, ground_truth.original, 'o')
+        %     hold off
+        %     pause(1)
+        % end
+
     catch ME    
         disp(ME)                                                            % catch any errors, record failure
         times_EGM(:, seed, init_idx, noise_idx, dt_idx) = [99 99];
@@ -53,7 +70,8 @@ for seed = 1:length(seeds)
     end
 
     try 
-        out2 = estimator.estimate_TM(beta0, (1+error)*system.x0');          % estimate using TM
+        % out2 = estimator.estimate_TM(beta0, (1+error)*system.x0');          % estimate using TM
+        out2 = estimator.estimate_TM(beta0, error.*system.x0');          % estimate using TM
 
         betas_TM(:, seed, init_idx, noise_idx, dt_idx) = out2.beta;         % record estimate, accuracy, time  
         times_TM(:, seed, init_idx, noise_idx, dt_idx) = out2.time;

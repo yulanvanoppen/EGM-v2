@@ -1,4 +1,4 @@
-function d = eucl_rel(x, y, ~)                                          % compute relative Euclidean distance
+function d = eucl_rel(x, y, ~)                                          % Compute relative Euclidean distance
     if nargin < 3
         if iscell(x) && iscell(y)
             x = cell2mat(x);

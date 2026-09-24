@@ -7,7 +7,7 @@ generalizedLV
 ********** MODEL STATES
 d/dt(X1) = X1 * (r - k1 * X1 - k2 * X3)
 d/dt(X2) = X2 * (r - k1 * X2 - k2 * X1)
-d/dt(X3) = X3 * (r - k1 * X3 - k2 * X2)
+d/dt(X3) = X3 * (r - 1 * X3 - 2 * X2)
 
 X1(0) = .6
 X2(0) = .6

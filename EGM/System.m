@@ -266,7 +266,7 @@ properties (Access = private)
         end
         
         
-        function construct_linear_decomposition(obj, f, t, u, x, beta)     % Extract RHS decomposition g(x)⋅k+h(x)
+        function construct_linear_decomposition(obj, f, t, u, x, beta)  % Extract RHS decomposition g(x)⋅k+h(x)
             obj.input = replace(obj.input{1}, 'interp1IQM', 'interp1');
             obj.input = str2func(['@(time) ' obj.input]);
             
@@ -285,7 +285,7 @@ properties (Access = private)
             end
             
             for l = 1:obj.K                                                 
-                g = matlabFunction(g_symb(l, :), 'Vars', [x; t; u]);           % create vectorized matlabFunction
+                g = matlabFunction(g_symb(l, :), 'Vars', [x; t; u]);        % create vectorized matlabFunction
                 g = @(states, times) g(states{:}, times, obj.input(times));
                 obj.g_cell{l} = @(states, times) g(obj.deal_states(states), ...
                                                    obj.deal_times(times, size(states, 3)));

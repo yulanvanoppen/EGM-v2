@@ -179,7 +179,7 @@ classdef Generator < handle
                 obj.data.beta = beta;
             end
                                   
-            if obj.data.lognormal                                          % numerically integrate ODE system
+            if obj.data.lognormal                                           % numerically integrate ODE system
                 obj.data.moriginal = obj.system.integrate(exp(obj.data.b), obj.settings);
                 obj.data.mdoriginal = obj.system.rhs(obj.data.moriginal, obj.data.t, exp(obj.data.b));
             else

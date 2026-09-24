@@ -1,6 +1,6 @@
 function Ainv = tryinv(A)                                               % Wrapper combining testing and generalized inversion
     try
-        Ainv = inv(A);
+        Ainv = inv(A);                                                      % much faster
     catch ME
         if strcmp(ME.identifier, 'MATLAB:nearlySingularMatrix')
             Ainv = pinv(A);

@@ -1,7 +1,7 @@
 %% Setup system ------------------------------------------------------------
 clearvars
                                                                             % generate ODE system object
-% system = System('model_HS.txt', 'auxiliary_HS.txt');
+% system = System('model_HS.txt', 'auxiliary_HS.txt', FixedParameters="c");
 % save('system_HS.mat', 'system')
 load('system_HS.mat')
 
@@ -49,4 +49,4 @@ end
 end
 end
 
-save('simulation/convergence_HS')                                           % save results
+save('simulation/convergence_HS2')                                           % save results

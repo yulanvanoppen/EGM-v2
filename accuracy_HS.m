@@ -1,13 +1,14 @@
 %% Setup system ------------------------------------------------------------
 clearvars
                                                                             % generate ODE system object
-% system = System('model_HS.txt', 'auxiliary_HS.txt');
-% save('system_HS.mat', 'system')
+system = System('model_HS.txt', 'auxiliary_HS.txt', FixedParameters="c");
+save('system_HS.mat', 'system')
 load('system_HS.mat')
 
 dt_values = [.25 .5 1];                                                     % experimental parameters
 noise_levels = [.005 .01 .02 .05];
 init_error = 5.^(-1:.5:1) - 1;                                              % IC (mean) initialization errors
+init_error = 4*[0 .125 .25 .375 .5];
 seeds = 1:50;
 
 beta0 = .5*system.k0';                                                      % initial parameter estimate
@@ -37,8 +38,11 @@ for seed = seeds
     generator = Generator(system, N=1, t=0:dt:10, error_std=noise, D_mult=eps, observed=system.K);
     [data, ground_truth] = generator.generate();
 
+    error = exp(normrnd(0, error, 1, system.K))
+
     dt_gm = .5 + .5*(dt_idx==3);                                            % setup estimator (subsample at dt=.25)
-    estimator = EGM(system, data, Knots=2.5:1.25:7.5, InitialConditions=(1+error)*[1 1], TimePoints=0:dt_gm:10);
+    % estimator = EGM(system, data, Knots=2.5:1.25:7.5, InitialConditions=(1+error)*[1 1], TimePoints=0:dt_gm:10);
+    estimator = EGM(system, data, InitialConditions=error.*system.x0', TimePoints=0:dt_gm:10, Sigma=0.01);
 
     try 
         out = estimator.estimate(beta0);                                    % estimate using EGM
@@ -54,7 +58,8 @@ for seed = seeds
     end
 
     try 
-        out2 = estimator.estimate_TM(beta0, (1+error)*system.x0');          % estimate using TM
+        % out2 = estimator.estimate_TM(beta0, (1+error)*system.x0');          % estimate using TM
+        out2 = estimator.estimate_TM(beta0, error.*system.x0');          % estimate using TM
 
         betas_TM(:, seed, init_idx, noise_idx, dt_idx) = out2.beta;         % record estimate, accuracy, time  
         times_TM(:, seed, init_idx, noise_idx, dt_idx) = out2.time;

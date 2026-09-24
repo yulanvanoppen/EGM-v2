@@ -1,0 +1,11 @@
+ukbhfcff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "van Oppen"
+  given-names: "Yulan"
+  orcid: "https://orcid.org/0000-0001-8214-2907"
+title: "EGM Matlab code package"
+version: 1.0
+doi: 10.5281/zenodo.14884458
+date-released: 2026-05-07
+url: "https://github.com/yulanvanoppen/EGM"

@@ -1,9 +1,9 @@
 %% Setup system ------------------------------------------------------------                
 clearvars
                                                                             % generate ODE system object
-% system = System('model_repressilator.txt', 'auxiliary_repressilator.txt', ...
-%                  FixedParameters=["DNAT" "kf" "Kd" "m1" "p1"]);
-% save('system_repressilator.mat', 'system')
+system = System('model_repressilator.txt', 'auxiliary_repressilator.txt', ...
+                 FixedParameters=["DNAT" "kf" "Kd" "m1" "p1"]);
+save('system_repressilator.mat', 'system')
 load('system_repressilator.mat')
 
                                                                             % setup generator
@@ -23,7 +23,7 @@ for seed = 1:nseeds
     estimator = EGM(system, data, Knots=10:10:90, InitialConditions=[10 20 30 .9 .9 .9 .2 .2 .2]);
     
     out1 = estimator.estimate(.5*system.k0');                               % estimate using EGM
-    out2 = estimator.estimate_TM(.5*system.k0', [10 20 30 .9 .9 .9 .2 .2 .2]);        % estimate using TM
+    out2 = estimator.estimate_TM(.5*system.k0', [10 20 30 .9 .9 .9 .2 .2 .2]);% estimate using TM
     
     estimates_EGM(seed, :) = out1.beta;                                     % store parameter estimates and ICs
     estimates_TM(seed, :) = out2.beta;
