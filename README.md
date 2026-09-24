@@ -6,9 +6,9 @@ _MATLAB® code package for parameter inference of ODE models with uncertain init
 ## Quickstart
 Install MATLAB® R2023b with IQM Tools Pro Version 1.2.2 (02.01.2017) and Monolix 2021R2.
 
-Run `accuracy_HS.m` and `accuracy_GLV.m` to reproduce the results in Figures 4.4&ndash;4.7, 4.11&ndash;4.14.
+Run `accuracy_HS.m` and `accuracy_GLV.m` to reproduce the results in Figures 4.4&ndash;4.7, 4.11&ndash;4.14  (updated to use extended Kalman smoothing instead of filtering, manuscript in preparation).
 
-Run `accuracy_HS.m` and `accuracy_GLV.m` to reproduce the results in Figures 4.8&ndash;4.10.
+Run `convergence_HS.m` and `convergence_GLV.m` to reproduce the results in Figures 4.8&ndash;4.10 (updated to use extended Kalman smoothing instead of filtering, manuscript in preparation).
 
 &nbsp;
 
