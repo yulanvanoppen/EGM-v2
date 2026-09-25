@@ -72,7 +72,7 @@ classdef GM < handle                                                    % Gradie
             obj.fdiff(1, 1:2) = [-1 1];
             obj.fdiff(end, end-1:end) = [-1 1];
 
-            obj.fdiff = obj.fdiff ./ dt;
+            obj.fdiff = obj.fdiff ./ dt';
         end
         
         

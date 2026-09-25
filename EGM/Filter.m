@@ -110,7 +110,7 @@ classdef Filter < handle
             y = y(:, n);
             xbar_pre = xbar_pre(:, n);                                      % prior before time point tn
             P_pre = P_pre(:, :, n);
-            Sigma = diag(obj.data.variances_sm(n, :));                      % measurement errors variances
+            Sigma = diag(obj.data.variances(n, :));                         % measurement errors variances
             
             KG = P_pre * obj.C' / (obj.C * P_pre * obj.C' + Sigma);         % Kalman gain
             
@@ -126,14 +126,14 @@ classdef Filter < handle
             TK = K * obj.T;
             
             if n == 1                                                       % allocate/initialize at first time point
-                Sigma = diag(obj.data.variances_sm(1, :));
+                Sigma = diag(obj.data.variances(1, :));
                 covar = zeros(obj.T*(K+obj.L));
                 covar(1:K, 1:K) = P;
                 covar(1:K, TK+1:TK+obj.L) = KG * Sigma;
                 covar(TK+(1:obj.L), 1:K) = covar(1:K, TK+(1:obj.L))';
                 covar(TK+(1:obj.L), TK+(1:obj.L)) = Sigma;
             else
-                Sigma = diag(obj.data.variances_sm(n, :));                  % measurement errors variances
+                Sigma = diag(obj.data.variances(n, :));                     % measurement errors variances
                 I = eye(K);
                 
                 factor = (I - KG*obj.C) * Phi;

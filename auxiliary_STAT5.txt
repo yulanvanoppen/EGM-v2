@@ -1,7 +1,9 @@
 ********** MODEL NAME
 STAT5
 
+
 ********** MODEL NOTES
+
 
 
 ********** MODEL STATES
@@ -13,61 +15,69 @@ d/dt(x3i) = 3*tauinv*(x3-x3i)
 d/dt(x3ii) = 3*tauinv*(x3i-x3ii)
 d/dt(x3tau) = 3*tauinv*(x3ii-x3tau)
 
-d/dt(Ph11) = 2*k4*Ph71 - 2*k3*Ph31
-d/dt(Ph21) = (input(time)*k1*Ph11) - (input(time)*k1*Ph21) - 2*k3*Ph31
-d/dt(Ph31) = - Ph31*(k3 - (k2*(8*Ph31 - 4*Ph21))/2) - (k2*Ph21*(4*Ph31 - 2*Ph21))/2
-d/dt(Ph41) = k3*Ph31 - k4*Ph71
-d/dt(Ph51) = 3*tauinv*Ph31 - 3*tauinv*Ph51
-d/dt(Ph61) = 3*tauinv*Ph51 - 3*tauinv*Ph61
-d/dt(Ph71) = 3*tauinv*Ph61 - 3*tauinv*Ph71
+d/dt(Ph11) = -2*Ph31*k3 + 2*Ph71*k4
+d/dt(Ph21) = Ph11*k1*input(time) - Ph21*k1*input(time) - 2*Ph31*k3
+d/dt(Ph31) = 0.5*Ph21*k2*(2*x23 - 4*x3) + Ph31*(0.5*k2*(-4*x23 + 8*x3) - k3)
+d/dt(Ph41) = Ph31*k3 - Ph71*k4
+d/dt(Ph51) = 3*Ph31*tauinv - 3*Ph51*tauinv
+d/dt(Ph61) = 3*Ph51*tauinv - 3*Ph61*tauinv
+d/dt(Ph71) = 3*Ph61*tauinv - 3*Ph71*tauinv
 
-d/dt(Ph12) = 2*k4*Ph72 - 2*k3*Ph32
-d/dt(Ph22) = (input(time)*k1*Ph12) - (input(time)*k1*Ph22) - 2*k3*Ph32
-d/dt(Ph32) = - Ph32*(k3 - (k2*(Ph32*8 - Ph22*4))/2) - (k2*Ph22*(Ph32*4 - Ph22*2))/2
-d/dt(Ph42) = k3*Ph32 - k4*Ph72
-d/dt(Ph52) = 3*tauinv*Ph32 - 3*tauinv*Ph52
-d/dt(Ph62) = 3*tauinv*Ph52 - 3*tauinv*Ph62
-d/dt(Ph72) = 3*tauinv*Ph62 - 3*tauinv*Ph72
+d/dt(Ph12) = -2*Ph32*k3 + 2*Ph72*k4
+d/dt(Ph22) = Ph12*k1*input(time) - Ph22*k1*input(time) - 2*Ph32*k3
+d/dt(Ph32) = 0.5*Ph22*k2*(2*x23 - 4*x3) + Ph32*(0.5*k2*(-4*x23 + 8*x3) - k3)
+d/dt(Ph42) = Ph32*k3 - Ph72*k4
+d/dt(Ph52) = 3*Ph32*tauinv - 3*Ph52*tauinv
+d/dt(Ph62) = 3*Ph52*tauinv - 3*Ph62*tauinv
+d/dt(Ph72) = 3*Ph62*tauinv - 3*Ph72*tauinv
 
-d/dt(Ph13) = 2*k4*Ph73 - 2*k3*Ph33
-d/dt(Ph23) = (input(time)*k1*Ph13) - (input(time)*k1*Ph23) - 2*k3*Ph33
-d/dt(Ph33) = - Ph33*(k3 - (k2*(Ph33*8 - Ph23*4))/2) - (k2*Ph23*(Ph33*4 - Ph23*2))/2
-d/dt(Ph43) = k3*Ph33 - k4*Ph73
-d/dt(Ph53) = 3*tauinv*Ph33 - 3*tauinv*Ph53
-d/dt(Ph63) = 3*tauinv*Ph53 - 3*tauinv*Ph63
-d/dt(Ph73) = 3*tauinv*Ph63 - 3*tauinv*Ph73
+d/dt(Ph13) = -2*Ph33*k3 + 2*Ph73*k4
+d/dt(Ph23) = Ph13*k1*input(time) - Ph23*k1*input(time) - 2*Ph33*k3
+d/dt(Ph33) = 0.5*Ph23*k2*(2*x23 - 4*x3) + Ph33*(0.5*k2*(-4*x23 + 8*x3) - k3)
+d/dt(Ph43) = Ph33*k3 - Ph73*k4
+d/dt(Ph53) = 3*Ph33*tauinv - 3*Ph53*tauinv
+d/dt(Ph63) = 3*Ph53*tauinv - 3*Ph63*tauinv
+d/dt(Ph73) = 3*Ph63*tauinv - 3*Ph73*tauinv
 
-d/dt(Ph14) = 2*k4*Ph74 - 2*k3*Ph34
-d/dt(Ph24) = (input(time)*k1*Ph14) - (input(time)*k1*Ph24) - 2*k3*Ph34
-d/dt(Ph34) = - Ph34*(k3 - (k2*(Ph34*8 - Ph24*4))/2) - (k2*Ph24*(Ph34*4 - Ph24*2))/2
-d/dt(Ph44) = k3*Ph34 - k4*Ph74
-d/dt(Ph54) = 3*tauinv*Ph34 - 3*tauinv*Ph54
-d/dt(Ph64) = 3*tauinv*Ph54 - 3*tauinv*Ph64
-d/dt(Ph74) = 3*tauinv*Ph64 - 3*tauinv*Ph74
+d/dt(Ph14) = -2*Ph34*k3 + 2*Ph74*k4
+d/dt(Ph24) = Ph14*k1*input(time) - Ph24*k1*input(time) - 2*Ph34*k3
+d/dt(Ph34) = 0.5*Ph24*k2*(2*x23 - 4*x3) + Ph34*(0.5*k2*(-4*x23 + 8*x3) - k3)
+d/dt(Ph44) = Ph34*k3 - Ph74*k4
+d/dt(Ph54) = 3*Ph34*tauinv - 3*Ph54*tauinv
+d/dt(Ph64) = 3*Ph54*tauinv - 3*Ph64*tauinv
+d/dt(Ph74) = 3*Ph64*tauinv - 3*Ph74*tauinv
 
-d/dt(Ph15) = 2*k4*Ph75 - 2*k3*Ph35
-d/dt(Ph25) = (input(time)*k1*Ph15) - (input(time)*k1*Ph25) - 2*k3*Ph35
-d/dt(Ph35) = - Ph35*(k3 - (k2*(Ph35*8 - Ph25*4))/2) - (k2*Ph25*(Ph35*4 - Ph25*2))/2
-d/dt(Ph45) = k3*Ph35 - k4*Ph75
-d/dt(Ph55) = 3*tauinv*Ph35 - 3*tauinv*Ph55
-d/dt(Ph65) = 3*tauinv*Ph55 - 3*tauinv*Ph65
-d/dt(Ph75) = 3*tauinv*Ph65 - 3*tauinv*Ph75
+d/dt(Ph15) = -2*Ph35*k3 + 2*Ph75*k4
+d/dt(Ph25) = Ph15*k1*input(time) - Ph25*k1*input(time) - 2*Ph35*k3
+d/dt(Ph35) = 0.5*Ph25*k2*(2*x23 - 4*x3) + Ph35*(0.5*k2*(-4*x23 + 8*x3) - k3)
+d/dt(Ph45) = Ph35*k3 - Ph75*k4
+d/dt(Ph55) = 3*Ph35*tauinv - 3*Ph55*tauinv
+d/dt(Ph65) = 3*Ph55*tauinv - 3*Ph65*tauinv
+d/dt(Ph75) = 3*Ph65*tauinv - 3*Ph75*tauinv
 
-d/dt(Ph16) = 2*k4*Ph76 - 2*k3*Ph36
-d/dt(Ph26) = (input(time)*k1*Ph16) - (input(time)*k1*Ph26) - 2*k3*Ph36
-d/dt(Ph36) = - Ph36*(k3 - (k2*(Ph36*8 - Ph26*4))/2) - (k2*Ph26*(Ph36*4 - Ph26*2))/2
-d/dt(Ph46) = k3*Ph36 - k4*Ph76
-d/dt(Ph56) = 3*tauinv*Ph36 - 3*tauinv*Ph56
-d/dt(Ph66) = 3*tauinv*Ph56 - 3*tauinv*Ph66
-d/dt(Ph76) = 3*tauinv*Ph66 - 3*tauinv*Ph76
+d/dt(Ph16) = -2*Ph36*k3 + 2*Ph76*k4
+d/dt(Ph26) = Ph16*k1*input(time) - Ph26*k1*input(time) - 2*Ph36*k3
+d/dt(Ph36) = 0.5*Ph26*k2*(2*x23 - 4*x3) + Ph36*(0.5*k2*(-4*x23 + 8*x3) - k3)
+d/dt(Ph46) = Ph36*k3 - Ph76*k4
+d/dt(Ph56) = 3*Ph36*tauinv - 3*Ph56*tauinv
+d/dt(Ph66) = 3*Ph56*tauinv - 3*Ph66*tauinv
+d/dt(Ph76) = 3*Ph66*tauinv - 3*Ph76*tauinv
 
-d/dt(Ph17) = 2*k4*Ph77 - 2*k3*Ph37
-d/dt(Ph27) = (input(time)*k1*Ph17) - (input(time)*k1*Ph27) - 2*k3*Ph37
-d/dt(Ph37) = - Ph37*(k3 - (k2*(Ph37*8 - Ph27*4))/2) - (k2*Ph27*(Ph37*4 - Ph27*2))/2
-d/dt(Ph47) = k3*Ph37 - k4*Ph77
-d/dt(Ph57) = 3*tauinv*Ph37 - 3*tauinv*Ph57
-d/dt(Ph67) = 3*tauinv*Ph57 - 3*tauinv*Ph67
-d/dt(Ph77) = 3*tauinv*Ph67 - 3*tauinv*Ph77
+d/dt(Ph17) = -2*Ph37*k3 + 2*Ph77*k4
+d/dt(Ph27) = Ph17*k1*input(time) - Ph27*k1*input(time) - 2*Ph37*k3
+d/dt(Ph37) = 0.5*Ph27*k2*(2*x23 - 4*x3) + Ph37*(0.5*k2*(-4*x23 + 8*x3) - k3)
+d/dt(Ph47) = Ph37*k3 - Ph77*k4
+d/dt(Ph57) = 3*Ph37*tauinv - 3*Ph57*tauinv
+d/dt(Ph67) = 3*Ph57*tauinv - 3*Ph67*tauinv
+d/dt(Ph77) = 3*Ph67*tauinv - 3*Ph77*tauinv
+
+x123(0) = 1
+x23(0) = 0
+x3(0) = 0
+x4(0) = 0
+x3i(0) = 0
+x3ii(0) = 0
+x3tau(0) = 0
 
 Ph11(0) = 1
 Ph21(0) = 0
@@ -124,14 +134,6 @@ Ph47(0) = 0
 Ph57(0) = 0
 Ph67(0) = 0
 Ph77(0) = 1
-                                     
-x123(0)  = 1
-x23(0)   = 0
-x3(0)    = 0
-x4(0)    = 0
-x3i(0)   = 0
-x3ii(0)  = 0
-x3tau(0) = 0
 
 ********** MODEL PARAMETERS
 k1 = 0.021
@@ -140,10 +142,13 @@ k3 = 0.1066
 k4 = 0.10658
 tauinv = 0.15625
 
+
 ********** MODEL VARIABLES
 
 
+
 ********** MODEL REACTIONS
+
 
 
 ********** MODEL FUNCTIONS
@@ -153,8 +158,11 @@ input(time) = interp1IQM([0,2,4,6,8,10,12,14,16,18,20,25,30,40,50,60],
 
 
 
+
 ********** MODEL EVENTS
 
 
+
 ********** MODEL MATLAB FUNCTIONS
+
 

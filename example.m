@@ -26,7 +26,7 @@ title('Generated dynamics and measurements')
 
 %% Infer using EGM ---------------------------------------------------------
 ICmean0 = (1+error)*system.x0';                                             % initial IC mean guess
-estimator = EGM(system, data, Knots=2.5:1.25:7.5, ICmean=ICmean0);
+estimator = EGM(system, data, Knots=2.5:1.25:7.5, InitialConditions=ICmean0);
 
 beta0 = [0.5 1.0];                                                          % initial model parameter guess
 out = estimator.estimate(beta0);
