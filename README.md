@@ -1,4 +1,4 @@
-# EGM: Extended Gradient Matching
+# EGM: Extended Gradient Matching (WORK IN PROGRESS)
 _MATLAB® code package for parameter inference of ODE models with uncertain initial conditions as presented in Chapter 4 of [1]_
 
 &nbsp;
