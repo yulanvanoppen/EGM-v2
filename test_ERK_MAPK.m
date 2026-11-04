@@ -26,8 +26,8 @@ else
     fixed = [fixed_timescales "k4" "h1" "h5" "hm3" "k1" "h6" "hm6"];        % free: k2 k3 h2 h4
 end
                                                                             % generate ODE system object
-% system = System('model_ERK_MAPK.txt', 'auxiliary_ERK_MAPK.txt', FixedParameters=fixed);
-% save('system_ERK_MAPK.mat', 'system')
+system = System('model_ERK_MAPK.txt', 'auxiliary_ERK_MAPK.txt', FixedParameters=fixed);
+save('system_ERK_MAPK.mat', 'system')
 load('system_ERK_MAPK.mat')
 
                                                                             % setup generator

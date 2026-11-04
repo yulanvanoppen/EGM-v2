@@ -204,11 +204,11 @@ classdef Smoother < handle                                              % Bsplin
             dy = (y3 - y1) ./ (d32 + d21);
             ddy = 2 * (y1./d21./d31 - y2./d32./d21 + y3./d32./d31);
 
-            if size(dy, 3) > 1
-                zscore_dy = mean(dy, 3) ./ std(dy, 0, 3);                       % normalized mean slopes and curvature estimates
+            if size(dy, 3) > 1                                              % with more than one trajectory, use shared information
+                zscore_dy = mean(dy, 3) ./ std(dy, 0, 3);                   % normalized mean slopes and curvature estimates
                 zscore_ddy = mean(ddy, 3) ./ std(ddy, 0, 3);
-            else
-                zscore_dy = mean(dy, 3) ./ std(dy, 0, 1);                       % normalized mean slopes and curvature estimates
+            else                                                            % otherwise use intra-trajectory variation to scale
+                zscore_dy = mean(dy, 3) ./ std(dy, 0, 1);                   % normalized mean slopes and curvature estimates
                 zscore_ddy = mean(ddy, 3) ./ std(ddy, 0, 1);
             end
             
@@ -273,4 +273,4 @@ classdef Smoother < handle                                              % Bsplin
             end
         end
     end
-end
+end

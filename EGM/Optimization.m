@@ -26,7 +26,7 @@ classdef Optimization < handle                                          % Genera
             H = (H+H')/2;                                                   % force symmetry
             f = -X' * precision * Y - prior.prec * prior.mean;
             if any(f ~= real(f), 'all') || any(f ~= real(f))
-                disp(1)
+                % disp(1)
             end
 
             A = kron([-1; 1], eye(length(lb)));                             % bounds to inequality constraints

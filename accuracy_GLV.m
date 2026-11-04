@@ -1,8 +1,7 @@
 %% Setup system ------------------------------------------------------------
 clearvars
                                                                             % generate ODE system object
-% system = System('model_GLV.txt', 'auxiliary_GLV.txt', FixedParameters = ["r"]);
-system = System('model_GLV.txt', 'auxiliary_GLV_legacyConvention.txt', FixedParameters = ["r"]);
+system = System('model_GLV.txt', 'auxiliary_GLV.txt', FixedParameters = ["r"]);
 save('system_GLV.mat', 'system')
 load('system_GLV.mat')
 
@@ -42,7 +41,7 @@ for seed = 1:length(seeds)
 
     dt_gm = .5 + .5*(dt_idx==3);                                            % setup estimator (subsample at dt=.25)
     % estimator = EGM(system, data, Knots=2:2:8, InitialConditions=(1+error)*system.x0', TimePoints=0:dt_gm:10);
-    estimator = EGM(system, data, InitialConditions=error.*system.x0', TimePoints=0:dt_gm:10);
+    estimator = EGM(system, data, InitialConditions=error.*system.x0', TimePoints=0:dt_gm:10, Sigma=.1);
 
     
 

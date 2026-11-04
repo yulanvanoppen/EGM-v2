@@ -42,7 +42,7 @@ for seed = seeds
 
     dt_gm = .5 + .5*(dt_idx==3);                                            % setup estimator (subsample at dt=.25)
     % estimator = EGM(system, data, Knots=2.5:1.25:7.5, InitialConditions=(1+error)*[1 1], TimePoints=0:dt_gm:10);
-    estimator = EGM(system, data, InitialConditions=error.*system.x0', TimePoints=0:dt_gm:10, Sigma=0.01);
+    estimator = EGM(system, data, InitialConditions=error.*system.x0', TimePoints=0:dt_gm:10, Sigma=0.1);
 
     try 
         out = estimator.estimate(beta0);                                    % estimate using EGM

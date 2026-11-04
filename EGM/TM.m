@@ -125,7 +125,7 @@ classdef TM < handle                                                    % Trajec
                     betas(cond, :) = beta_x0(1:obj.system.P);
                     x0s(cond, :) = beta_x0(obj.system.P+1:end);
                 catch ME
-                    disp(ME)
+                    % disp(ME)
                 end
             end
 
@@ -182,7 +182,7 @@ classdef TM < handle                                                    % Trajec
                 
                 ss = sum((solution - y).^2 ./ variances, 'all');            % sum of squares on observed states
             catch ME
-                disp(ME)
+                % disp(ME)
             end
         end
         
@@ -207,8 +207,7 @@ classdef TM < handle                                                    % Trajec
         end
         
         
-        function save_estimates(obj)                                    % Extract results 
-            obj.data.init
+        function save_estimates(obj)                                    % Extract results
             obj.data.beta_fs = obj.beta_fs;                                 % store results
             obj.data.fitted_fs = obj.fitted_fs;
             obj.data.dfitted_fs = obj.dfitted_fs;

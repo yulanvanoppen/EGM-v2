@@ -194,9 +194,11 @@ classdef Filter < handle
 
             S_eval = obj.sigma.*out(:, 1:K)';                               % constant process noise function
 
+            Phi_end = Phi(:, :, end);
             integrand = zeros(size(Phi));
             for tidx = 1:length(tout)                                       % precompute for efficiency
-                Phiti_Sti = Phi(:, :, tidx) .* S_eval(:, tidx)';
+                % Phiti_Sti = Phi(:, :, tidx) .* S_eval(:, tidx)';
+                Phiti_Sti = (Phi_end / Phi(:, :, tidx)) .* S_eval(:, tidx)';
                 integrand(:, :, tidx) = Phiti_Sti * Phiti_Sti';
             end
 
@@ -205,4 +207,4 @@ classdef Filter < handle
         end
         
     end
-end
+end

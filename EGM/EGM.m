@@ -18,6 +18,42 @@ classdef EGM < handle
         niterGM                                                             % #iterations for the first stage
         tolGM                                                               % convergence tolerance for the first stage
 
+        M_gp                                                                % #points of the GP ODE enforcement grid
+        niterGP                                                             % #iterations for generalized profiling
+        tolGP                                                               % convergence tolerance for generalized profiling
+        icweightGP                                                          % GP hidden state initial condition anchor weight
+        scaleGP                                                             % logical for per-state GP residual scaling
+        initGP                                                              % GP hidden state initialization mode
+        ninnerGP                                                            % #inner Gauss-Newton steps for profiling
+        hiddenknotsGP                                                       % B-spline knots for unobserved states
+        nestedGP                                                            % logical for the nested GP scheme
+
+        levelMAGI                                                           % MAGI discretization level
+        niterMAGI                                                           % #HMC iterations
+        nstepsMAGI                                                          % #leapfrog steps per HMC iteration
+        burninMAGI                                                          % HMC burn-in proportion
+        bandMAGI                                                            % band matrix approximation size
+        stepsizeMAGI                                                        % initial leapfrog step size factor
+        kernelMAGI                                                          % GP covariance kernel
+        sigmaMAGI                                                           % known measurement error SDs
+        fixedsigmaMAGI                                                      % logical for treating sigma as known
+        summaryMAGI                                                         % posterior summary ('mean' or 'median')
+        initMAGI                                                            % MAGI trajectory initialization mode
+        verboseMAGI                                                         % logical for MagiSolver progress messages
+
+        M_pc                                                                % #points of the PC enforcement grid
+        niterPC                                                             % #outer iterations for the cascade
+        tolPC                                                               % convergence tolerance for the cascade
+        ninnerPC                                                            % #inner Gauss-Newton steps
+        lambdaPC                                                            % per-equation ODE penalty weight
+        lambdadataPC                                                        % data fidelity weight
+        lambdaicPC                                                          % initial condition penalty weight
+        lambdapositivityPC                                                  % positivity barrier weight
+        anchorallPC                                                         % logical for anchoring observed states too
+        initPC                                                              % PC hidden state initialization mode
+        nstartPC                                                            % #starting points for the outer problem
+        solverPC                                                            % 'fmincon' or 'builtin'
+
         init                                                                % vector of initial conditions
         P_CV                                                                % initial condition prior CV
         sigma                                                               % Kalman filter process noise
@@ -27,12 +63,18 @@ classdef EGM < handle
         settings_smoothing                                                  % structs containing default/user preferences
         settings_filter
         settings_inference
+        settings_gp
+        settings_magi
+        settings_pc
         output                                                              % inference output struct
         
         smoother                                                            % internal smoother object
         filter                                                              % internal EKF object
         gm                                                                  % internal gradient matching object
         tm                                                                  % internal trajectory matching object
+        gp                                                                  % internal generalized profiling object
+        magi                                                                % internal MAGI object
+        pc                                                                  % internal parameter cascade object
         
         beta                                                                % model parameter vector
         filtered                                                            % Kalman filtered/smoothed states
@@ -62,6 +104,42 @@ classdef EGM < handle
             default_ConvergenceTolSM = 1e-3;
             default_MaxIterationsGM = 20;
             default_ConvergenceTolGM = 1e-4;
+
+            default_GridSizeGP = 201;                                       % generalized profiling defaults
+            default_MaxIterationsGP = 20;
+            default_ConvergenceTolGP = 1e-4;
+            default_ICWeightGP = .1;
+            default_ScaleModelGP = true;
+            default_InitializationGP = 'integrate';
+            default_InnerIterationsGP = 8;
+            default_HiddenKnotsGP = [];
+            default_NestedGP = [];                                          % empty: nested iff states are unobserved
+
+            default_DiscretizationMAGI = 1;                                 % MAGI defaults
+            default_IterationsMAGI = 100;
+            default_StepsMAGI = 200;
+            default_BurninMAGI = .25;
+            default_BandSizeMAGI = 20;
+            default_StepSizeMAGI = [];
+            default_KernelMAGI = 'generalMatern';
+            default_SigmaMAGI = [];
+            default_FixedSigmaMAGI = false;
+            default_SummaryMAGI = 'mean';
+            default_InitializationMAGI = 'magi';
+            default_VerboseMAGI = false;
+
+            default_GridSizePC = 201;                                       % parameter cascade defaults
+            default_MaxIterationsPC = 20;
+            default_ConvergenceTolPC = 1e-4;
+            default_InnerIterationsPC = 20;
+            default_LambdaPC = 1e2;
+            default_LambdaDataPC = 1;
+            default_LambdaICPC = 1e-2;
+            default_LambdaPositivityPC = 1e3;
+            default_AnchorAllPC = false;
+            default_InitializationPC = 'integrate';
+            default_MultiStartPC = 5;
+            default_SolverPC = 'fmincon';
 
             default_InitialConditions = system.x0';
             default_PCV = .25;
@@ -96,6 +174,45 @@ classdef EGM < handle
             addParameter(parser, 'MaxIterationsGM', default_MaxIterationsGM, @isscalar);
             addParameter(parser, 'ConvergenceTolGM', default_ConvergenceTolGM, @isscalar);
 
+            addParameter(parser, 'GridSizeGP', default_GridSizeGP, @(x) isscalar(x) && x >= 11);
+            addParameter(parser, 'MaxIterationsGP', default_MaxIterationsGP, @isscalar);
+            addParameter(parser, 'ConvergenceTolGP', default_ConvergenceTolGP, @isscalar);
+            addParameter(parser, 'ICWeightGP', default_ICWeightGP, @(x) isscalar(x) && x > 0);
+            addParameter(parser, 'ScaleModelGP', default_ScaleModelGP, @islogical);
+            addParameter(parser, 'InitializationGP', default_InitializationGP, ...
+                         @(x) any(strcmpi(char(x), {'integrate', 'constant'})));
+            addParameter(parser, 'InnerIterationsGP', default_InnerIterationsGP, @isscalar);
+            addParameter(parser, 'HiddenKnotsGP', default_HiddenKnotsGP, @(x) isnumeric(x) || iscell(x));
+            addParameter(parser, 'NestedGP', default_NestedGP, @(x) isempty(x) || islogical(x));
+
+            addParameter(parser, 'DiscretizationMAGI', default_DiscretizationMAGI, @(x) isscalar(x) && x >= 0);
+            addParameter(parser, 'IterationsMAGI', default_IterationsMAGI, @isscalar);
+            addParameter(parser, 'StepsMAGI', default_StepsMAGI, @isscalar);
+            addParameter(parser, 'BurninMAGI', default_BurninMAGI, @(x) isscalar(x) && x >= 0 && x < 1);
+            addParameter(parser, 'BandSizeMAGI', default_BandSizeMAGI, @isscalar);
+            addParameter(parser, 'StepSizeMAGI', default_StepSizeMAGI, @isnumeric);
+            addParameter(parser, 'KernelMAGI', default_KernelMAGI, @(x) ischar(x) || isstring(x));
+            addParameter(parser, 'SigmaMAGI', default_SigmaMAGI, @isnumeric);
+            addParameter(parser, 'FixedSigmaMAGI', default_FixedSigmaMAGI, @islogical);
+            addParameter(parser, 'SummaryMAGI', default_SummaryMAGI, @(x) any(strcmpi(char(x), {'mean', 'median'})));
+            addParameter(parser, 'InitializationMAGI', default_InitializationMAGI, ...
+                         @(x) any(strcmpi(char(x), {'magi', 'integrate'})));
+            addParameter(parser, 'VerboseMAGI', default_VerboseMAGI, @islogical);
+
+            addParameter(parser, 'GridSizePC', default_GridSizePC, @(x) isscalar(x) && x >= 11);
+            addParameter(parser, 'MaxIterationsPC', default_MaxIterationsPC, @isscalar);
+            addParameter(parser, 'ConvergenceTolPC', default_ConvergenceTolPC, @isscalar);
+            addParameter(parser, 'InnerIterationsPC', default_InnerIterationsPC, @isscalar);
+            addParameter(parser, 'LambdaPC', default_LambdaPC, @(x) isnumeric(x) && all(x > 0));
+            addParameter(parser, 'LambdaDataPC', default_LambdaDataPC, @(x) isscalar(x) && x > 0);
+            addParameter(parser, 'LambdaICPC', default_LambdaICPC, @(x) isscalar(x) && x >= 0);
+            addParameter(parser, 'LambdaPositivityPC', default_LambdaPositivityPC, @(x) isscalar(x) && x >= 0);
+            addParameter(parser, 'AnchorAllPC', default_AnchorAllPC, @islogical);
+            addParameter(parser, 'InitializationPC', default_InitializationPC, ...
+                         @(x) any(strcmpi(char(x), {'integrate', 'constant'})));
+            addParameter(parser, 'MultiStartPC', default_MultiStartPC, @(x) isscalar(x) && x >= 1);
+            addParameter(parser, 'SolverPC', default_SolverPC, @(x) any(strcmpi(char(x), {'fmincon', 'builtin'})));
+
             addParameter(parser, 'InitialConditions', default_InitialConditions, @(x) numel(x) == system.K);
             addParameter(parser, 'PCV', default_PCV, @(x) isscalar(x) && x > 0);
             addParameter(parser, 'Sigma', default_Sigma, @(x) isscalar(x) && x > 0);
@@ -125,6 +242,42 @@ classdef EGM < handle
                                          't_gm', obj.t_gm);
             obj.settings_inference = struct('lb', obj.lb, 'ub', obj.ub, 'positive', obj.positive, 't_gm', obj.t_gm, ...
                                             'weights', weights, 'niter', obj.niterGM, 'tol', obj.tolGM, 'prior', obj.prior);
+
+            knots_gp = cell(1, obj.system.K);                               % generalized profiling splines every state, so
+            hidden_knots = unique([obj.knots{:}]);                          % hidden states need knots as well. Their
+            if ~isempty(obj.hiddenknotsGP)                                  % flexibility matters: too stiff and they bias
+                hidden_knots = reshape(obj.hiddenknotsGP, 1, []);           % beta, too flexible and they absorb the
+                hidden_knots = max(obj.data.t(1), min(obj.data.t(end), hidden_knots));
+                hidden_knots = sort(unique([obj.data.t(1) hidden_knots obj.data.t(end)]));
+                hidden_knots = (hidden_knots - obj.data.t(1)) / range(obj.data.t);
+            end                                                             % information identifying it, so the default is
+            for k = 1:obj.system.K                                          % the union of the observed knot sets and
+                l = find(obj.data.observed == k, 1);                        % HiddenKnotsGP overrides it
+                if isempty(l), knots_gp{k} = hidden_knots; else, knots_gp{k} = obj.knots{l}; end
+            end
+
+            obj.settings_gp = struct('order', 4, 'knots', {knots_gp}, 'positive', obj.positive, ...
+                                     'lb', obj.lb, 'ub', obj.ub, 'prior', obj.prior, 'M', obj.M_gp, ...
+                                     'niter', obj.niterGP, 'tol', obj.tolGP, 'ic_weight', obj.icweightGP, ...
+                                     'scale_model', obj.scaleGP, 'init_mode', obj.initGP, ...
+                                     'ninner', obj.ninnerGP);
+            if ~isempty(obj.nestedGP), obj.settings_gp.nested = obj.nestedGP; end
+
+            obj.settings_magi = struct('level', obj.levelMAGI, 'niter', obj.niterMAGI, ...
+                                       'nsteps', obj.nstepsMAGI, 'burnin', obj.burninMAGI, ...
+                                       'band', obj.bandMAGI, 'stepsize', obj.stepsizeMAGI, ...
+                                       'kernel', obj.kernelMAGI, 'sigma', obj.sigmaMAGI, ...
+                                       'fixed_sigma', obj.fixedsigmaMAGI, 'verbose', obj.verboseMAGI, ...
+                                       'summary', obj.summaryMAGI, 'init_mode', obj.initMAGI, ...
+                                       'positive', obj.positive, 'lb', obj.lb, 'ub', obj.ub);
+
+            obj.settings_pc = struct('order', 4, 'knots', {knots_gp}, 'positive', obj.positive, ...
+                                     'lb', obj.lb, 'ub', obj.ub, 'prior', obj.prior, 'M', obj.M_pc, ...
+                                     'niter', obj.niterPC, 'tol', obj.tolPC, 'ninner', obj.ninnerPC, ...
+                                     'inner_tol', 1e-8, 'fd_step', 1e-6, 'nsearch', 8, 'nstart', obj.nstartPC, 'solver', obj.solverPC, 'lambda', obj.lambdaPC, ...
+                                     'lambda_data', obj.lambdadataPC, 'lambda_ic', obj.lambdaicPC, ...
+                                     'lambda_positivity', obj.lambdapositivityPC, ...
+                                     'anchor_all', obj.anchorallPC, 'init_mode', obj.initPC);
         end
 
                                                                         % Basic parsing to allow conditional input validations
@@ -183,6 +336,42 @@ classdef EGM < handle
             obj.tolSM = max(1e-12, parser.Results.ConvergenceTolSM);
             obj.niterGM = max(1, round(parser.Results.MaxIterationsGM));
             obj.tolGM = max(1e-12, parser.Results.ConvergenceTolGM);
+
+            obj.M_gp = max(11, round(parser.Results.GridSizeGP));
+            obj.niterGP = max(1, round(parser.Results.MaxIterationsGP));
+            obj.tolGP = max(1e-12, parser.Results.ConvergenceTolGP);
+            obj.icweightGP = parser.Results.ICWeightGP;
+            obj.scaleGP = parser.Results.ScaleModelGP;
+            obj.initGP = lower(char(parser.Results.InitializationGP));
+            obj.ninnerGP = max(1, round(parser.Results.InnerIterationsGP));
+            obj.hiddenknotsGP = parser.Results.HiddenKnotsGP;
+            obj.nestedGP = parser.Results.NestedGP;
+
+            obj.levelMAGI = max(0, round(parser.Results.DiscretizationMAGI));
+            obj.niterMAGI = max(2, round(parser.Results.IterationsMAGI));
+            obj.nstepsMAGI = max(1, round(parser.Results.StepsMAGI));
+            obj.burninMAGI = parser.Results.BurninMAGI;
+            obj.bandMAGI = max(1, round(parser.Results.BandSizeMAGI));
+            obj.stepsizeMAGI = parser.Results.StepSizeMAGI;
+            obj.kernelMAGI = char(parser.Results.KernelMAGI);
+            obj.sigmaMAGI = parser.Results.SigmaMAGI;
+            obj.fixedsigmaMAGI = parser.Results.FixedSigmaMAGI;
+            obj.summaryMAGI = lower(char(parser.Results.SummaryMAGI));
+            obj.initMAGI = lower(char(parser.Results.InitializationMAGI));
+            obj.verboseMAGI = parser.Results.VerboseMAGI;
+
+            obj.M_pc = max(11, round(parser.Results.GridSizePC));
+            obj.niterPC = max(1, round(parser.Results.MaxIterationsPC));
+            obj.tolPC = max(1e-12, parser.Results.ConvergenceTolPC);
+            obj.ninnerPC = max(1, round(parser.Results.InnerIterationsPC));
+            obj.lambdaPC = parser.Results.LambdaPC;
+            obj.lambdadataPC = parser.Results.LambdaDataPC;
+            obj.lambdaicPC = parser.Results.LambdaICPC;
+            obj.lambdapositivityPC = parser.Results.LambdaPositivityPC;
+            obj.anchorallPC = parser.Results.AnchorAllPC;
+            obj.initPC = lower(char(parser.Results.InitializationPC));
+            obj.nstartPC = max(1, round(parser.Results.MultiStartPC));
+            obj.solverPC = lower(char(parser.Results.SolverPC));
 
             obj.init = reshape(parser.Results.InitialConditions, 1, []);
             obj.P_CV = parser.Results.PCV;
@@ -406,5 +595,155 @@ classdef EGM < handle
             
             warning(ws);
         end
+
+
+        function out = estimate_GP(obj, beta_init, x_init)              % Estimate using generalized profiling
+            ws = warning('error', 'MATLAB:nearlySingularMatrix');
+            silent = nargin == 3;
+
+            if nargin < 3 || isempty(x_init), x_init = obj.init; end        % default to the supplied IC guess
+            x_init = reshape(x_init, 1, []);
+            x_init(obj.data.observed) = obj.data.traces(1, :, 1);
+
+                                                                            % generalized profiling component
+            obj.gp = GP(obj.data, obj.system, obj.settings_gp, beta_init, x_init);
+
+            tic
+            out = obj.gp.optimize();                                        % profile splines and parameters jointly
+            if silent, toc_est = toc; else, toc_est = toc, end   %#ok<NOPRT>
+
+            obj.beta = out.beta_gp;                                         % initial conditions follow from the splines
+            obj.output = out;
+            int_data = obj.data;
+            int_data.init = obj.output.init;
+
+            try                                                             % integrate system and compute rhs
+                fitted = obj.system.integrate(obj.beta, int_data);          % (for comparison only: estimation itself
+                fitted_fine = obj.system.integrate(obj.beta, int_data, obj.data.t_fine);    % never solves the ODE)
+                dfitted = obj.system.rhs(fitted, obj.data.t, obj.beta);
+                dfitted_fine = obj.system.rhs(fitted_fine, obj.data.t_fine, obj.beta);
+            catch ME
+                disp(ME)                                                    % fall back on the profiled splines
+                fitted = out.smoothed_gp;
+                fitted_fine = out.smoothed_fine;
+                dfitted = out.dsmoothed_gp;
+                dfitted_fine = out.dsmoothed_fine;
+            end
+
+            if obj.positive
+                fitted = max(1e-12, fitted);                                % force positive predicted states
+                fitted_fine = max(1e-12, fitted_fine);
+            end
+
+            obj.output.fitted = fitted;                                     % save results in output
+            obj.output.dfitted = dfitted;
+            obj.output.fitted_fine = fitted_fine;
+            obj.output.dfitted_fine = dfitted_fine;
+
+            obj.output.time = [0 toc_est];
+            obj.output.beta = obj.beta;
+            out = obj.output;
+
+            warning(ws);
+        end
+
+
+        function out = estimate_MAGI(obj, beta_init, x_init)            % Estimate using manifold-constrained GP inference
+            silent = nargin == 3;
+
+            if nargin < 3 || isempty(x_init), x_init = obj.init; end        % default to the supplied IC guess
+            x_init = reshape(x_init, 1, []);
+            x_init(obj.data.observed) = obj.data.traces(1, :, 1);
+
+                                                                            % MAGI component (wraps the authors' sampler)
+            obj.magi = MAGI(obj.data, obj.system, obj.settings_magi, beta_init, x_init);
+
+            tic
+            out = obj.magi.optimize();                                      % posterior over trajectories and parameters
+            if silent, toc_est = toc; else, toc_est = toc, end   %#ok<NOPRT>
+
+            obj.beta = out.beta_magi;                                       % initial conditions from the posterior mean
+            obj.output = out;
+            int_data = obj.data;
+            int_data.init = obj.output.init;
+
+            try                                                             % integrate for comparability with the other
+                fitted = obj.system.integrate(obj.beta, int_data);          % estimators; MAGI itself needs no ODE solve
+                fitted_fine = obj.system.integrate(obj.beta, int_data, obj.data.t_fine);
+                dfitted = obj.system.rhs(fitted, obj.data.t, obj.beta);
+                dfitted_fine = obj.system.rhs(fitted_fine, obj.data.t_fine, obj.beta);
+            catch ME
+                disp(ME)                                                    % fall back on the sampled trajectories
+                fitted = interp1(out.tvec_magi', out.smoothed_magi, obj.data.t');
+                fitted_fine = interp1(out.tvec_magi', out.smoothed_magi, obj.data.t_fine');
+                dfitted = obj.system.rhs(fitted, obj.data.t, obj.beta);
+                dfitted_fine = obj.system.rhs(fitted_fine, obj.data.t_fine, obj.beta);
+            end
+
+            if obj.positive
+                fitted = max(1e-12, fitted);                                % force positive predicted states
+                fitted_fine = max(1e-12, fitted_fine);
+            end
+
+            obj.output.fitted = fitted;                                     % save results in output
+            obj.output.dfitted = dfitted;
+            obj.output.fitted_fine = fitted_fine;
+            obj.output.dfitted_fine = dfitted_fine;
+
+            obj.output.time = [0 toc_est];
+            obj.output.beta = obj.beta;
+            out = obj.output;
+        end
+
+
+        function out = estimate_PC(obj, beta_init, x_init)              % Estimate using the Ramsay parameter cascade
+            ws = warning('error', 'MATLAB:nearlySingularMatrix');
+            silent = nargin == 3;
+
+            if nargin < 3 || isempty(x_init), x_init = obj.init; end
+            x_init = reshape(x_init, 1, []);
+            x_init(obj.data.observed) = obj.data.traces(1, :, 1);
+
+                                                                            % parameter cascade component
+            obj.pc = PC(obj.data, obj.system, obj.settings_pc, beta_init, x_init);
+
+            tic
+            out = obj.pc.optimize();                                        % nested inner/outer optimization
+            if silent, toc_est = toc; else, toc_est = toc, end   %#ok<NOPRT>
+
+            obj.beta = out.beta_pc;
+            obj.output = out;
+            int_data = obj.data;
+            int_data.init = obj.output.init;
+
+            try                                                             % integrate for comparability with the other
+                fitted = obj.system.integrate(obj.beta, int_data);          % estimators; the cascade never integrates
+                fitted_fine = obj.system.integrate(obj.beta, int_data, obj.data.t_fine);
+                dfitted = obj.system.rhs(fitted, obj.data.t, obj.beta);
+                dfitted_fine = obj.system.rhs(fitted_fine, obj.data.t_fine, obj.beta);
+            catch ME
+                disp(ME)                                                    % fall back on the profiled splines
+                fitted = out.smoothed_pc;
+                fitted_fine = out.smoothed_fine;
+                dfitted = out.dsmoothed_pc;
+                dfitted_fine = out.dsmoothed_fine;
+            end
+
+            if obj.positive
+                fitted = max(1e-12, fitted);
+                fitted_fine = max(1e-12, fitted_fine);
+            end
+
+            obj.output.fitted = fitted;
+            obj.output.dfitted = dfitted;
+            obj.output.fitted_fine = fitted_fine;
+            obj.output.dfitted_fine = dfitted_fine;
+
+            obj.output.time = [0 toc_est];
+            obj.output.beta = obj.beta;
+            out = obj.output;
+
+            warning(ws);
+        end
     end
-end
+end

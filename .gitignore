@@ -3,3 +3,6 @@
 plot_*.m
 figures/
 simulation/
+example_MAGI.m
+*.mexw64
+system_*.mat
