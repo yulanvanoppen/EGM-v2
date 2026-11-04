@@ -84,6 +84,8 @@ classdef TM < handle                                                    % Trajec
                     uncertain = 1;
                 case "bifunctional_TCS"
                     uncertain = 4;
+                case "ERK_MAPK"                                         % scan unknown enzyme levels KK(0), P(0)
+                    uncertain = [4 5];
             end
             
             conditions = repmat(center', [1 length(multipliers) * ones(1, length(uncertain))]);

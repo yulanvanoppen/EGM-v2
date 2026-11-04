@@ -299,6 +299,8 @@ classdef EGM < handle
                     uncertain = 1;
                 case "bifunctional_TCS"
                     uncertain = 4;
+                case "ERK_MAPK"                                         % scan unknown enzyme levels KK(0), P(0)
+                    uncertain = [4 5];
             end
                                                                             % all combinations of initial conditions to consider
             conditions = repmat(center', [1 length(multipliers) * ones(1, length(uncertain))]);
@@ -324,15 +326,24 @@ classdef EGM < handle
                 conditions(:, 4) = min(conditions(:, 3), conditions(:, 4));
             end
 
-            errors = zeros(1, size(conditions, 1));                         % allocate parameter estimates and generalized 
+            errors = inf(1, size(conditions, 1));                          % allocate parameter estimates and generalized 
             betas = zeros(size(conditions, 1), obj.system.P);               % sums of squares for each vector of initial conditions
 
             for cond = 1:size(conditions, 1)                                % one GM step per tested IC vector
-                obj.filter.update_ICmean(conditions(cond, :));
+                try                                                         % skip IC vectors for which filtering fails
+                    obj.filter.update_ICmean(conditions(cond, :));          % (e.g. CVODE errors), leaving error at Inf
+    
+                    obj.filtered = obj.filter.EKS(beta_init);               % filter and gradient matching
+                    obj.filtered.covar = obj.augment_covariances(obj.filtered.covar, obj.output.variances_sm);
+                    [betas(cond, :), errors(cond), ~] = obj.gm.estimate(beta_init, obj.filtered);
+                catch ME
+                    fprintf('IC scan: skipping condition %d/%d (%s)\n', cond, size(conditions, 1), ME.message)
+                end
+            end
 
-                obj.filtered = obj.filter.EKS(beta_init);                   % filter and gradient matching
-                obj.filtered.covar = obj.augment_covariances(obj.filtered.covar, obj.output.variances_sm);
-                [betas(cond, :), errors(cond), ~] = obj.gm.estimate(beta_init, obj.filtered);
+            if all(isinf(errors))                                           % no usable IC vector at all
+                error('EGM:ICscanFailed', 'Initial condition scan failed for all %d candidate IC vectors.', ...
+                      size(conditions, 1))
             end
 
             [~, cond] = min(errors(:));                                     % pick IC vector with smallest associated sum of squares

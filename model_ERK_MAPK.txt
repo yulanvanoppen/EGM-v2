@@ -2,54 +2,74 @@
 ERK_MAPK
 
 ********** MODEL NOTES
+Markevich et al. (2004) MAPK double phosphorylation/dephosphorylation with
+MAPKK (KK, kinase) and MKP3 (P, phosphatase); microscopic (mass-action) model
+with BioModels parameter values (BIOMD0000000026). Units: nM, s.
+Kinase:      M+KK <-> MKK -> Mp+KK (k1,km1,k2);  Mp+KK <-> MpKK -> Mpp+KK (k3,km3,k4)
+Phosphatase: Mpp+P <-> MppP -> MpP (h1,hm1,h2);  MpP <-> Mp+P (h3,hm3)
+             Mp+P <-> MpPs -> MP (h4,hm4,h5);    MP <-> M+P (h6,hm6)
+States Mpt and Mppt are the measured totals:
+  Mpt  = Mp + MpKK + MpP + MpPs   (y1, total single-phosphorylated MAPK)
+  Mppt = Mpp + MppP               (y2, total double-phosphorylated MAPK)
+so free Mp = Mpt-MpKK-MpP-MpPs and free Mpp = Mppt-MppP.
+Enzyme levels reduced (KK(0)=1 instead of 50, P(0)=2 instead of 100) to operate
+in the QSSA regime; M(0)=150 instead of 500 for better practical identifiability.
+Dynamics are ~50x slower than with the original enzyme levels.
 
 ********** MODEL STATES
-d/dt(M)   = k2*C1 + k15*C6 - k1*M*E - k16*M*F
-d/dt(Mp)  = k3*C1 + k5*C2 + k10*C4 + k13*C5 - k11*Mp*F - k12*Mp*F - k4*Mp*E
-d/dt(Mpp) = k6*C2 + k8*C3 - k7*Mpp*F
-d/dt(E)   = (k2+k3)*C1 + (k5+k6)*C2 - k1*M*E - k4*Mp*E
-d/dt(F)   = k8*C3 + k10*C4 + k13*C5 + k15*C6 - k11*Mp*F - k12*Mp*F - k7*Mpp*F - k16*M*F
-d/dt(C1)  = k1*M*E - (k2+k3)*C1
-d/dt(C2)  = k4*Mp*E - (k5+k6)*C2
-d/dt(C3)  = k7*Mpp*F - (k8+k9)*C3
-d/dt(C4)  = k9*C3 - k10*C4 + k11*Mp*F
-d/dt(C5)  = k12*Mp*F - (k13+k14)*C5
-d/dt(C6)  = k14*C5 - k15*C6 + k16*M*F
+d/dt(M)    = km1*MKK - k1*M*KK + h6*MP - hm6*M*P
+d/dt(Mpt)  = k2*MKK - k4*MpKK + h2*MppP - h5*MpPs
+d/dt(Mppt) = k4*MpKK - h2*MppP
+d/dt(KK)   = (km1+k2)*MKK - k1*M*KK + (km3+k4)*MpKK - k3*(Mpt-MpKK-MpP-MpPs)*KK
+d/dt(P)    = hm1*MppP - h1*(Mppt-MppP)*P + h3*MpP - hm3*(Mpt-MpKK-MpP-MpPs)*P + hm4*MpPs - h4*(Mpt-MpKK-MpP-MpPs)*P + h6*MP - hm6*M*P
+d/dt(MKK)  = k1*M*KK - (km1+k2)*MKK
+d/dt(MpKK) = k3*(Mpt-MpKK-MpP-MpPs)*KK - (km3+k4)*MpKK
+d/dt(MppP) = h1*(Mppt-MppP)*P - (hm1+h2)*MppP
+d/dt(MpP)  = h2*MppP + hm3*(Mpt-MpKK-MpP-MpPs)*P - h3*MpP
+d/dt(MpPs) = h4*(Mpt-MpKK-MpP-MpPs)*P - (hm4+h5)*MpPs
+d/dt(MP)   = h5*MpPs + hm6*M*P - h6*MP
 
-M(0)   = 1
-Mp(0)  = 0
-Mpp(0) = 0
-E(0)   = 0.1
-F(0)   = 0.1
-C1(0)  = 0
-C2(0)  = 0
-C3(0)  = 0
-C4(0)  = 0
-C5(0)  = 0
-C6(0)  = 0
+M(0)    = 150
+Mpt(0)  = 0
+Mppt(0) = 0
+KK(0)   = 1
+P(0)    = 2
+MKK(0)  = 0
+MpKK(0) = 0
+MppP(0) = 0
+MpP(0)  = 0
+MpPs(0) = 0
+MP(0)   = 0
 
 ********** MODEL PARAMETERS
-k1  = 1
-k2  = 1
-k3  = 1
-k4  = 1
-k5  = 1
-k6  = 1
-k7  = 1
-k8  = 1
-k9  = 1
-k10 = 1
-k11 = 1
-k12 = 1
-k13 = 1
-k14 = 1
-k15 = 1
-k16 = 1
+k1  = 0.02
+km1 = 1.0
+k2  = 0.01
+k3  = 0.032
+km3 = 1.0
+k4  = 15.0
+h1  = 0.045
+hm1 = 1.0
+h2  = 0.092
+h3  = 1.0
+hm3 = 0.01
+h4  = 0.01
+hm4 = 1.0
+h5  = 0.5
+h6  = 0.086
+hm6 = 0.0011
 
 ********** MODEL VARIABLES
 
+
 ********** MODEL REACTIONS
+
 
 ********** MODEL FUNCTIONS
 
+
 ********** MODEL EVENTS
+
+
+********** MODEL MATLAB FUNCTIONS
+
